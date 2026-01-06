@@ -4,6 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CrowdBet</title>
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
   <style>
     :root {
       --bg: #0b0f14;
@@ -32,6 +36,15 @@
       justify-content: center;
       padding: 16px;
       overflow-x: hidden;
+
+      /* Never show the vertical scroll bar (but keep scrolling) */
+      overflow-y: auto;
+      scrollbar-width: none;        /* Firefox */
+      -ms-overflow-style: none;     /* IE/Edge legacy */
+    }
+    body::-webkit-scrollbar {       /* Chrome/Safari */
+      width: 0;
+      height: 0;
     }
 
     .app {
@@ -45,7 +58,7 @@
 
     .header {
       display: flex;
-      align-items: center;
+      align-items: flex-start; /* allow balance under pill */
       justify-content: space-between;
       padding: 10px 12px;
       border-radius: 16px;
@@ -63,6 +76,7 @@
       display: flex;
       align-items: center;
       gap: 8px;
+      padding-top: 4px;
     }
 
     .logo {
@@ -115,6 +129,7 @@
       overflow: hidden;
       user-select: none;
       font-weight: 400;
+      white-space: nowrap;
     }
 
     .pill::before {
@@ -139,6 +154,106 @@
         inset 0 6px 10px rgba(255,255,255,0.22),
         inset 0 -8px 12px rgba(0,0,0,0.18);
       pointer-events: none;
+    }
+
+    .pill-top {
+      position: relative;
+      z-index: 1;
+      line-height: 1.1;
+      white-space: nowrap;
+    }
+
+    /* balance outside the pill */
+    .balance-under {
+      margin-top: 2px;
+      width: 100%;            /* match pill width */
+      text-align: center;     /* center under pill */
+      font-size: 10px;
+      opacity: 0.9;
+      letter-spacing: 0.2px;
+      white-space: nowrap;
+    }
+
+    /* Categories row */
+    .category-bar {
+	  width: 100vw;                 /* ✅ full screen width */
+  margin-left: calc(50% - 50vw);/* ✅ break out of centered container */
+  padding-left: 16px;           /* keep same side padding as body */
+  padding-right: 16px;
+      position: sticky;
+      top: 64px; /* sits under the sticky header */
+      z-index: 49;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .cat-scroll {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      overflow-x: auto;
+      padding: 6px 4px;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+	    justify-content: space-between; /* ✅ spreads across full width */
+		width: 100%;                    /* ✅ ensure it uses full width */
+    }
+    .cat-scroll::-webkit-scrollbar { width: 0; height: 0; }
+
+    .cat-chip {
+      scroll-snap-align: start;
+        flex: 1 1 0;          /* ✅ each chip takes equal width */
+		justify-content: center; /* ✅ center the text inside */
+      border-radius: 999px;
+      padding: 9px 12px;
+      font-size: 12px;
+      letter-spacing: 0.2px;
+      user-select: none;
+      cursor: pointer;
+
+      color: #cbd5e1;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.10);
+
+      box-shadow:
+        0 10px 18px rgba(0,0,0,0.35),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      transition: transform 0.12s ease, border-color 0.12s ease, background 0.12s ease;
+    }
+
+    .cat-chip:active { transform: scale(0.98); }
+
+    .cat-chip .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.30);
+      box-shadow: 0 0 10px rgba(255,255,255,0.12);
+    }
+
+    .cat-chip.active {
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.40);
+      background:
+        radial-gradient(circle at 30% 20%, rgba(255,255,255,0.24), rgba(255,255,255,0) 52%),
+        linear-gradient(180deg, rgba(168,85,247,0.50), rgba(124,58,237,0.35));
+      box-shadow:
+        0 12px 26px rgba(0,0,0,0.45),
+        0 0 22px rgba(168,85,247,0.14);
+    }
+
+    .cat-chip.active .dot {
+      background: rgba(255,255,255,0.85);
+      box-shadow:
+        0 0 16px rgba(255,255,255,0.28),
+        0 0 26px rgba(168,85,247,0.22);
     }
 
     .feed {
@@ -398,8 +513,8 @@
     }
 
     .nav-icon {
-      width: 40px;   /* smaller */
-      height: 40px;  /* smaller */
+      width: 40px;
+      height: 40px;
       border-radius: 14px;
       display: grid;
       place-items: center;
@@ -409,8 +524,14 @@
       filter: grayscale(1) saturate(0.15) drop-shadow(0 6px 10px rgba(0,0,0,0.35));
 
       color: #e6edf3;
-      font-size: 22px; /* smaller */
+      font-size: 22px;
       line-height: 1;
+    }
+
+    .nav-icon i {
+      font-size: 22px;
+      line-height: 1;
+      display: block;
     }
 
     .nav-item.active {
@@ -422,6 +543,245 @@
         drop-shadow(0 10px 18px rgba(0,0,0,0.45))
         drop-shadow(0 0 12px rgba(168,85,247,0.08));
     }
+
+    /* First bet popup (Candy Crush purple style) */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 22px;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      touch-action: manipulation;
+      pointer-events: auto;
+    }
+
+    .modal-card {
+      width: min(420px, 100%);
+      border-radius: 28px;
+      padding: 18px 18px 16px;
+      color: #fff;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      pointer-events: auto;
+
+      background:
+        radial-gradient(circle at 30% 20%, rgba(255,255,255,0.55), rgba(255,255,255,0) 45%),
+        linear-gradient(180deg, #a855f7 0%, #7c3aed 50%, #4c1d95 100%);
+
+      border: 3px solid rgba(255,255,255,0.78);
+
+      box-shadow:
+        0 10px 0 rgba(0,0,0,0.18),
+        0 18px 55px rgba(0,0,0,0.60),
+        0 0 35px rgba(255,255,255,0.22),
+        0 0 70px rgba(168,85,247,0.22);
+
+      -webkit-text-stroke: 0.8px rgba(70, 30, 120, 0.25);
+      text-shadow:
+        0 2px 0 rgba(0,0,0,0.22),
+        0 0 12px rgba(255,255,255,0.30);
+    }
+
+    .modal-card::before {
+      content: "";
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      top: 10px;
+      height: 44%;
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0));
+      opacity: 0.45;
+      pointer-events: none;
+    }
+
+    .modal-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      box-shadow:
+        inset 0 10px 16px rgba(255,255,255,0.30),
+        inset 0 -12px 18px rgba(0,0,0,0.18);
+      pointer-events: none;
+    }
+
+    .modal-title {
+      font-size: 22px;
+      font-weight: 1000;
+      letter-spacing: 0.6px;
+      margin-bottom: 8px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .modal-body {
+      font-size: 14px;
+      line-height: 1.45;
+      opacity: 0.98;
+      padding: 0 8px;
+      margin-bottom: 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .modal-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .modal-ok {
+      border: 2px solid rgba(255,255,255,0.78);
+      background: rgba(255,255,255,0.14);
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 16px;
+      font-weight: 900;
+      letter-spacing: 0.4px;
+      cursor: pointer;
+      box-shadow:
+        0 6px 0 rgba(0,0,0,0.16),
+        0 12px 26px rgba(0,0,0,0.35);
+      user-select: none;
+    }
+
+    .modal-link {
+      font-size: 12px;
+      color: rgba(255,255,255,0.92);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      opacity: 0.95;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    /* --- Swipe tutorial (2s) --- */
+	.swipe-hint {
+	  position: fixed;
+	  inset: 0;
+	  z-index: 99995;
+	  display: grid;
+	  place-items: center;
+	  pointer-events: none; /* don't block interaction */
+	  background: rgba(0,0,0,0.7);
+	  backdrop-filter: blur(10px);          /* ✅ add this */
+	  -webkit-backdrop-filter: blur(10px);  /* ✅ add this */
+	}
+
+    .swipe-hint-card {
+      width: min(360px, calc(100vw - 44px));
+      border-radius: 26px;
+      padding: 16px 16px 14px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+
+      background: rgba(0,0,0,0.25);
+      border: 1px solid rgba(255,255,255,0.14);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+
+      box-shadow:
+        0 14px 40px rgba(0,0,0,0.45),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+    }
+
+    .swipe-hint-title {
+      font-weight: 900;
+      letter-spacing: 0.4px;
+      font-size: 14px;
+      color: rgba(255,255,255,0.95);
+      margin-bottom: 10px;
+    }
+
+    .swipe-hint-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .swipe-hand {
+      width: 46px;
+      height: 46px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+
+      background:
+        radial-gradient(circle at 30% 20%, rgba(255,255,255,0.25), rgba(255,255,255,0) 52%),
+        linear-gradient(180deg, rgba(168,85,247,0.55), rgba(124,58,237,0.35));
+      border: 1px solid rgba(255,255,255,0.24);
+      box-shadow:
+        0 10px 26px rgba(0,0,0,0.40),
+        0 0 22px rgba(168,85,247,0.10);
+    }
+
+    .swipe-arrow {
+      font-size: 22px;
+      color: rgba(255,255,255,0.92);
+      opacity: 0.95;
+    }
+
+    .swipe-track {
+      position: relative;
+      width: 150px;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.10);
+      overflow: hidden;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+    }
+
+    .swipe-dot {
+      position: absolute;
+      top: 50%;
+      left: 14px;
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.95);
+      box-shadow:
+        0 0 16px rgba(255,255,255,0.35),
+        0 0 30px rgba(168,85,247,0.18);
+      animation: swipeRight 0.9s cubic-bezier(.2,.9,.2,1) infinite;
+    }
+
+    @keyframes swipeRight {
+      0%   { transform: translate(0, -50%) scale(1); opacity: 0.95; }
+      70%  { transform: translate(95px, -50%) scale(1.05); opacity: 1; }
+      100% { transform: translate(95px, -50%) scale(0.98); opacity: 0.85; }
+    }
+
+    .swipe-hint-caption {
+      margin-top: 10px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.80);
+      letter-spacing: 0.2px;
+    }
+
+    .swipe-hint.hide {
+      animation: hintFadeOut 0.25s ease forwards;
+    }
+
+    @keyframes hintFadeOut {
+      to { opacity: 0; transform: scale(0.98); }
+    }
+
+    [hidden] { display: none !important; }
   </style>
 </head>
 
@@ -429,10 +789,50 @@
   <div id="particles" class="particles"></div>
   <div id="comboLayer" class="particles"></div>
 
+  <!-- Swipe tutorial (2s) -->
+  <div id="swipeHint" class="swipe-hint" hidden>
+    <div class="swipe-hint-card">
+      <div class="swipe-hint-title">Swipe right to bet</div>
+      <div class="swipe-hint-row">
+        <div class="swipe-hand">🤚</div>
+        <div class="swipe-arrow">→</div>
+        <div class="swipe-track">
+          <div class="swipe-dot"></div>
+        </div>
+      </div>
+      <div class="swipe-hint-caption">Slide the card to the right to place a bet</div>
+    </div>
+  </div>
+
+  <!-- First bet popup -->
+  <div id="firstBetModal" class="modal-overlay" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="firstBetTitle">
+      <div class="modal-title" id="firstBetTitle">Bet confirmed</div>
+      <div class="modal-body">
+        You just made your first 1-cent bet! Bet 2 more times to get a 2x booster
+      </div>
+      <div class="modal-actions">
+        <button class="modal-ok" id="firstBetOk" type="button">OK</button>
+        <a class="modal-link" href="#" id="howCrowdBetWorks">How CrowdBet works</a>
+      </div>
+    </div>
+  </div>
+
   <div class="app" id="app">
     <div class="header">
       <h1><span class="logo"></span> CrowdBet</h1>
-      <div class="pill">Bets: <span id="rightCounter">0</span></div>
+
+      <div style="display:flex; flex-direction:column; align-items:flex-end;">
+        <div class="pill">
+          <div class="pill-top">Bet: <span id="rightCounter">$0.00</span></div>
+        </div>
+        <div class="balance-under">Balance: <span id="balanceEl">$10.00</span></div>
+      </div>
+    </div>
+
+    <!-- Categories -->
+    <div class="category-bar" id="categoryBar">
+      <div class="cat-scroll" id="catScroll"></div>
     </div>
 
     <div class="feed" id="feed"></div>
@@ -441,36 +841,147 @@
   <div class="bottom-nav" id="bottomNav">
     <div class="bottom-nav-inner">
       <div class="nav-item active">
-        <div class="nav-icon">🏠</div>
+        <div class="nav-icon"><i class="bi bi-house"></i></div>
         <div>Home</div>
       </div>
       <div class="nav-item">
-        <div class="nav-icon">🎲</div>
-        <div>Bets</div>
+        <div class="nav-icon"><i class="bi bi-coin"></i></div>
+        <div>Bet</div>
       </div>
       <div class="nav-item">
-        <div class="nav-icon">👤</div>
+        <div class="nav-icon"><i class="bi bi-person-circle"></i></div>
         <div>Profile</div>
       </div>
     </div>
   </div>
 
   <script>
+    const CATEGORIES = ["All", "Sports", "Bitcoin", "Weather", "Tech", "Other"];
+
     const tweetsData = [
-      { name:"Nova Reyes", handle:"@novareyes", time:"2m",  text:"Bet: $20 that Argentina wins by 2+ goals tonight. Odds: +185. Who’s tailing?", replies:12, reposts:48, likes:310 },
-      { name:"Theo Martinez", handle:"@theom",     time:"8m",  text:"Bet: $15 that BTC closes above $50k this week. Odds: +210. I’m in.", replies:19, reposts:61, likes:982 },
-      { name:"Aya K.",       handle:"@aya_k",     time:"12m", text:"Bet: $10 that it rains in BA before Friday. Odds: +160. Prove me wrong.", replies:8, reposts:33, likes:220 },
-      { name:"Milo Chen",    handle:"@miloch",    time:"18m", text:"Bet: $25 that the next iPhone announcement mentions “AI” 10+ times. Odds: +130.", replies:41, reposts:120, likes:1420 },
-      { name:"Sienna Park",  handle:"@siennap",   time:"25m", text:"Bet: $12 that the under hits on tonight’s game. Odds: +175. Feeling spicy.", replies:17, reposts:54, likes:610 },
-      { name:"Ghost in the Shell Script", handle:"@gitscript", time:"33m", text:"Bet: $30 that someone ships a hotfix before lunch. Odds: +145. 😅", replies:6, reposts:22, likes:178 }
+      { id:"t1", category:"Sports",  name:"Nova Reyes", handle:"@novareyes", time:"2m",  bet:"Argentina wins by 2+ goals tonight.", odds: 185, tail:"Who’s tailing?", replies:12, reposts:48, likes:310 },
+      { id:"t2", category:"Bitcoin", name:"Theo Martinez", handle:"@theom",     time:"8m",  bet:"BTC closes above $50k this week.",   odds: 210, tail:"I’m in.", replies:19, reposts:61, likes:982 },
+      { id:"t3", category:"Weather", name:"Aya K.",       handle:"@aya_k",     time:"12m", bet:"It rains in BA before Friday.",     odds: 160, tail:"Prove me wrong.", replies:8, reposts:33, likes:220 },
+      { id:"t4", category:"Tech",    name:"Milo Chen",    handle:"@miloch",    time:"18m", bet:"The next iPhone announcement mentions “AI” 10+ times.", odds: 130, tail:"", replies:41, reposts:120, likes:1420 },
+      { id:"t5", category:"Sports",  name:"Sienna Park",  handle:"@siennap",   time:"25m", bet:"The under hits on tonight’s game.", odds: 175, tail:"Feeling spicy.", replies:17, reposts:54, likes:610 },
+      { id:"t6", category:"Other",   name:"Ghost in the Shell Script", handle:"@gitscript", time:"33m", bet:"Someone ships a hotfix before lunch.", odds: 145, tail:"😅", replies:6, reposts:22, likes:178 }
     ];
 
     const feed = document.getElementById("feed");
     const app = document.getElementById("app");
+    const particleLayer = document.getElementById("particles");
+    const catScroll = document.getElementById("catScroll");
+
+    /* Swipe tutorial */
+    const swipeHint = document.getElementById("swipeHint");
+    let swipeHintShown = false;
+    function showSwipeHintOnce() {
+      if (swipeHintShown) return;
+      swipeHintShown = true;
+      swipeHint.hidden = false;
+
+      setTimeout(() => {
+        swipeHint.classList.add("hide");
+        setTimeout(() => {
+          swipeHint.hidden = true;
+          swipeHint.classList.remove("hide");
+        }, 260);
+      }, 2000);
+    }
+
+    /* Track dismissed cards so filtering doesn't bring them back */
+    const dismissedIds = new Set();
+
+    /* Counters (define BEFORE resetFeed runs) */
+    let rightSwipeCombo = 0;
+    let comboTimeout = null;
+
+    // Bet total in cents (1 cent per right swipe)
+    let betCents = 0;
+
+    // Balance in cents (starts at $10.00)
+    let balanceCents = 1000;
+
+    const rightCounterEl = document.getElementById("rightCounter");
+    const balanceEl = document.getElementById("balanceEl");
+
+    function formatMoneyFromCents(cents) {
+      return "$" + (cents / 100).toFixed(2);
+    }
+
+    function updateRightCounter() {
+      rightCounterEl.textContent = formatMoneyFromCents(betCents);
+    }
+
+    function updateBalance() {
+      balanceEl.textContent = formatMoneyFromCents(balanceCents);
+    }
+
+    // Convert American odds to implied probability %
+    function oddsToPercent(americanOdds) {
+      const o = Number(americanOdds);
+      if (!Number.isFinite(o) || o === 0) return 0;
+      let p = 0;
+      if (o > 0) p = 100 / (o + 100);
+      else p = Math.abs(o) / (Math.abs(o) + 100);
+      return Math.round(p * 100);
+    }
+
+    /* First bet popup logic */
+    const firstBetModal = document.getElementById("firstBetModal");
+    const firstBetOk = document.getElementById("firstBetOk");
+    const howCrowdBetWorks = document.getElementById("howCrowdBetWorks");
+    let firstBetModalShown = false;
+
+    function openFirstBetModal() {
+      if (firstBetModalShown) return;
+      firstBetModalShown = true;
+      firstBetModal.hidden = false;
+      document.body.style.overflowY = "hidden";
+    }
+
+    function closeFirstBetModal() {
+      firstBetModal.hidden = true;
+      document.body.style.overflowY = "auto";
+    }
+
+    firstBetOk.addEventListener("click", closeFirstBetModal);
+    firstBetModal.addEventListener("click", (e) => {
+      if (e.target === firstBetModal) closeFirstBetModal();
+    });
+
+    howCrowdBetWorks.addEventListener("click", (e) => {
+      e.preventDefault();
+      // Placeholder: hook this to your "How it works" screen when ready.
+      closeFirstBetModal();
+    });
+
+    /* Categories UI + filtering */
+    let activeCategory = "All";
+
+    function renderCategories() {
+      catScroll.innerHTML = "";
+      CATEGORIES.forEach(cat => {
+        const chip = document.createElement("div");
+        chip.className = "cat-chip" + (cat === activeCategory ? " active" : "");
+        chip.innerHTML = `<span class="dot"></span><span>${cat}</span>`;
+        chip.addEventListener("click", () => {
+          activeCategory = cat;
+          renderCategories();
+          renderFeed();
+        });
+        catScroll.appendChild(chip);
+      });
+    }
 
     function makeTweet(tweet) {
       const card = document.createElement("div");
       card.className = "tweet-card";
+      card.dataset.tid = tweet.id;
+
+      const pct = oddsToPercent(tweet.odds);
+      const tail = (tweet.tail || "").trim();
+      const text = `Bet: ${tweet.bet} Odds: ${pct}%.${tail ? " " + tail : ""}`;
 
       card.innerHTML = `
         <div class="stamp like">LIKE</div>
@@ -485,7 +996,7 @@
               <span class="time">· ${tweet.time}</span>
             </div>
 
-            <div class="tweet-text">${tweet.text}</div>
+            <div class="tweet-text">${text}</div>
 
             <div class="meta">
               <span>💬 ${tweet.replies}</span>
@@ -498,6 +1009,29 @@
 
       enableSwipe(card);
       return card;
+    }
+
+    function renderFeed() {
+      feed.innerHTML = "";
+
+      const filtered = tweetsData.filter(t => {
+        if (dismissedIds.has(t.id)) return false;
+        if (activeCategory === "All") return true;
+        return t.category === activeCategory;
+      });
+
+      if (filtered.length === 0) {
+        feed.innerHTML = `
+          <div class="empty">
+            <div style="font-size: 18px; font-weight: 900; margin-bottom: 6px;">No bets in this category</div>
+            <div style="opacity: 0.85;">Try another category or reset the feed.</div>
+            <button class="reset" onclick="resetFeed()">Reset Feed</button>
+          </div>
+        `;
+        return;
+      }
+
+      filtered.forEach(t => feed.appendChild(makeTweet(t)));
     }
 
     function enableSwipe(card) {
@@ -555,6 +1089,10 @@
         if (Math.abs(dx) > threshold) {
           if (dx > 0) triggerCombo();
 
+          // mark dismissed for future filtering renders
+          const tid = card.dataset.tid;
+          if (tid) dismissedIds.add(tid);
+
           const flyX = dir * (window.innerWidth + 300);
           const flyY = dy * 1.1;
 
@@ -563,20 +1101,9 @@
           card.style.opacity = "0";
 
           setTimeout(() => {
-            const next = card.nextElementSibling;
             card.remove();
-            if (next) {
-              next.style.transition = "none";
-              next.style.transform = "translateY(10px)";
-              next.offsetHeight;
-              next.style.transition = "transform 0.35s cubic-bezier(.18,.95,.22,1)";
-              next.style.transform = "translateY(0)";
-              setTimeout(() => {
-                next.style.transition = "";
-                next.style.transform = "";
-              }, 360);
-            }
-            checkEmpty();
+            // if feed is now empty, re-render to show empty state
+            if (feed.querySelectorAll(".tweet-card").length === 0) renderFeed();
           }, 280);
         } else {
           card.style.transition = "transform 0.25s cubic-bezier(.2,.9,.2,1)";
@@ -594,39 +1121,44 @@
       card.addEventListener("pointermove", onMove, { passive: false });
     }
 
-    function checkEmpty() {
-      if (feed.querySelectorAll(".tweet-card").length === 0) {
-        feed.innerHTML = `
-          <div class="empty">
-            <div style="font-size: 18px; font-weight: 900; margin-bottom: 6px;">No more bets</div>
-            <div style="opacity: 0.85;">You swiped them all. Want them back?</div>
-            <button class="reset" onclick="resetFeed()">Reset Feed</button>
-          </div>
-        `;
-      }
-    }
-
     function resetFeed() {
-      feed.innerHTML = "";
-      tweetsData.forEach(t => feed.appendChild(makeTweet(t)));
+      dismissedIds.clear();
+
+      rightSwipeCombo = 0;
+      betCents = 0;
+      balanceCents = 1000;
+      firstBetModalShown = false;
+
+      activeCategory = "All";
+      renderCategories();
+
+      updateRightCounter();
+      updateBalance();
+
+      renderFeed();
+
+      // show hint again on reset
+      swipeHintShown = false;
+      showSwipeHintOnce();
     }
 
     window.resetFeed = resetFeed;
-    resetFeed();
 
-    let rightSwipeCombo = 0;
-    let comboTimeout = null;
-
-    let rightSwipeTotal = 0;
-    const rightCounterEl = document.getElementById("rightCounter");
-    function updateRightCounter() { rightCounterEl.textContent = rightSwipeTotal; }
     updateRightCounter();
+    updateBalance();
+    renderCategories();
+    renderFeed();
 
-    const particleLayer = document.getElementById("particles");
+    // Show tutorial on first load
+    showSwipeHintOnce();
 
     function triggerCombo() {
-      rightSwipeTotal++;
+      // 1 cent bet placed
+      betCents += 1;
+      balanceCents = Math.max(0, balanceCents - 1);
+
       updateRightCounter();
+      updateBalance();
 
       rightSwipeCombo++;
 
@@ -644,6 +1176,11 @@
 
       spawnBurst(cx, cy);
       spawnComboBox(`${label}  x${rightSwipeCombo}`, cx, cy);
+
+      /* Show popup AFTER combo box animation finishes (first bet only) */
+      if (betCents === 1) {
+        setTimeout(openFirstBetModal, 760);
+      }
     }
 
     function spawnComboBox(text, x, y) {
