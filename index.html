@@ -227,6 +227,13 @@
       white-space: nowrap;
       transition: transform 0.12s ease, border-color 0.12s ease, background 0.12s ease;
     }
+	.cat-chip i {
+	  font-size: 14px;
+	  opacity: 0.9;
+	}
+	.cat-chip.active i {
+	  opacity: 1;
+	}
 
     .cat-chip:active { transform: scale(0.98); }
 
@@ -266,7 +273,7 @@
     .tweet-card {
       position: relative;
       padding: 16px;
-      border-radius: 18px;
+      border-radius: 10px;
       background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
       border: 1px solid rgba(255,255,255,0.10);
       box-shadow: 0 14px 40px rgba(0,0,0,0.35);
@@ -288,14 +295,22 @@
       align-items: flex-start;
     }
 
-    .avatar {
-      width: 46px;
-      height: 46px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, rgba(255,95,210,0.35), rgba(255,210,90,0.30));
-      border: 1px solid rgba(255,255,255,0.12);
-      flex-shrink: 0;
-    }
+	.avatar {
+	  width: 46px;
+	  height: 46px;
+	  border-radius: 14px;
+	  overflow: hidden;
+	  flex-shrink: 0;
+	  border: 1px solid rgba(255,255,255,0.12);
+	  background: rgba(255,255,255,0.06);
+	}
+
+	.avatar img {
+	  width: 100%;
+	  height: 100%;
+	  object-fit: cover;
+	  display: block;
+	}
 
     .name-line {
       display: flex;
@@ -359,6 +374,39 @@
       border-color: rgba(255,92,135,0.8);
       background: rgba(255,92,135,0.08);
     }
+	
+	/* Bet countdown badge (top-right of first card) */
+	.bet-timer {
+	  position: absolute;
+	  top: 0px;
+	  right: 0px;
+
+	  padding: 3px 5px;
+	  border-radius: 18px;
+
+	  font-size: 10px;
+	  letter-spacing: 0.3px;
+	  white-space: nowrap;
+
+	  color: #fff;
+
+	  background:
+		radial-gradient(circle at 30% 20%, rgba(255,255,255,0.45), rgba(255,255,255,0) 45%),
+		linear-gradient(180deg, #ff5c87 0%, #d9466f 50%, #a61e4d 100%);
+
+
+	  box-shadow:
+		0 6px 0 rgba(0,0,0,0.18),
+		0 12px 26px rgba(0,0,0,0.45),
+		0 0 18px rgba(255,92,135,0.35);
+
+	  -webkit-text-stroke: 0.4px rgba(90, 0, 0, 0.35);
+	  text-shadow:
+		0 2px 0 rgba(0,0,0,0.25),
+		0 0 10px rgba(255,255,255,0.35);
+
+	  pointer-events: none;
+	}
 
     .empty {
       text-align: center;
@@ -479,6 +527,63 @@
       82%  { opacity: 1; transform: translateY(0) scale(1.00); }
       100% { opacity: 0; transform: translateY(-8px) scale(0.96); }
     }
+	@keyframes comboPopLong {
+	  0%   { opacity: 0; transform: translateY(10px) scale(0.86); }
+	  12%  { opacity: 1; transform: translateY(0) scale(1.12); }
+	  30%  { opacity: 1; transform: translateY(0) scale(1.00); }
+	  88%  { opacity: 1; transform: translateY(0) scale(1.00); }
+	  100% { opacity: 0; transform: translateY(-8px) scale(0.96); }
+	}
+	
+	.combo-box.long {
+	  animation: comboPopLong 1.25s cubic-bezier(.2,.9,.2,1) forwards;
+	}
+	
+	/* Booster combo box — same style as top booster timer */
+	.combo-box.booster {
+	  background:
+		radial-gradient(circle at 30% 20%, rgba(255,255,255,0.55), rgba(255,255,255,0) 45%),
+		linear-gradient(180deg, #b11245 0%, #7f0e13 50%, #ef0202 100%);
+
+	  border: 3px solid rgba(255,255,255,0.85);
+
+	  box-shadow:
+		0 12px 0 rgba(0,0,0,0.22),
+		0 22px 60px rgba(0,0,0,0.65),
+		0 0 40px rgba(239,2,2,0.35),
+		0 0 90px rgba(239,2,2,0.25);
+
+	  -webkit-text-stroke: 2.2px rgba(90, 0, 0, 0.45);
+	  text-shadow:
+		0 4px 0 rgba(0,0,0,0.28),
+		0 0 22px rgba(255,255,255,0.45);
+	}
+	
+	/* Booster countdown (Candy Crush purple) */
+	.booster-timer {
+	  font-size: 12px;
+	  padding: 6px 10px;
+	  border-radius: 999px;
+	  margin-right: 8px;
+	  font-weight: 900;
+	  letter-spacing: 0.4px;
+	  white-space: nowrap;
+
+	  background:
+		radial-gradient(circle at 30% 20%, rgba(255,255,255,0.55), rgba(255,255,255,0) 45%),
+		linear-gradient(180deg, #b11245 0%, #7f0e13 50%, #ef0202 100%);
+
+	  box-shadow:
+		0 6px 0 rgba(0,0,0,0.18),
+		0 12px 26px rgba(0,0,0,0.45),
+		0 0 18px rgba(168,85,247,0.35);
+
+	  -webkit-text-stroke: 0.6px rgba(70,30,120,0.35);
+	  text-shadow:
+		0 2px 0 rgba(0,0,0,0.25),
+		0 0 10px rgba(255,255,255,0.35);
+	}
+	
 
     .bottom-nav {
       position: fixed;
@@ -821,9 +926,10 @@
   <div class="app" id="app">
     <div class="header">
       <h1><span class="logo"></span> CrowdBet</h1>
-
+      <div id="boosterTimer" class="booster-timer" hidden>30s</div>
       <div style="display:flex; flex-direction:column; align-items:flex-end;">
         <div class="pill">
+		
           <div class="pill-top">Bet: <span id="rightCounter">$0.00</span></div>
         </div>
         <div class="balance-under">Balance: <span id="balanceEl">$10.00</span></div>
@@ -857,7 +963,14 @@
 
   <script>
     const CATEGORIES = ["All", "Sports", "Bitcoin", "Weather", "Tech", "Other"];
-
+	 const CATEGORY_ICONS = {
+	  All: "bi-grid",
+	  Sports: "bi-dribbble",
+	  Bitcoin: "bi-currency-bitcoin",
+	  Weather: "bi-cloud-sun",
+	  Tech: "bi-cpu",
+	  Other: "bi-stars"
+	};
     const tweetsData = [
       { id:"t1", category:"Sports",  name:"Nova Reyes", handle:"@novareyes", time:"2m",  bet:"Argentina wins by 2+ goals tonight.", odds: 185, tail:"Who’s tailing?", replies:12, reposts:48, likes:310 },
       { id:"t2", category:"Bitcoin", name:"Theo Martinez", handle:"@theom",     time:"8m",  bet:"BTC closes above $50k this week.",   odds: 210, tail:"I’m in.", replies:19, reposts:61, likes:982 },
@@ -895,6 +1008,16 @@
     /* Counters (define BEFORE resetFeed runs) */
     let rightSwipeCombo = 0;
     let comboTimeout = null;
+	let boosterActive = false;
+	let boosterSeconds = 0;
+	let boosterInterval = null;
+	// First card countdown (8s)
+	let firstCardTimerInterval = null;
+	let firstCardSeconds = 8;
+	let firstCardActive = false;
+	let timedCardId = null;
+
+	const boosterTimerEl = document.getElementById("boosterTimer");
 
     // Bet total in cents (1 cent per right swipe)
     let betCents = 0;
@@ -964,7 +1087,10 @@
       CATEGORIES.forEach(cat => {
         const chip = document.createElement("div");
         chip.className = "cat-chip" + (cat === activeCategory ? " active" : "");
-        chip.innerHTML = `<span class="dot"></span><span>${cat}</span>`;
+        chip.innerHTML = `
+		  <i class="bi ${CATEGORY_ICONS[cat]}"></i>
+		  <span>${cat}</span>
+		`;
         chip.addEventListener("click", () => {
           activeCategory = cat;
           renderCategories();
@@ -973,6 +1099,11 @@
         catScroll.appendChild(chip);
       });
     }
+
+	function getAvatarUrl(id) {
+	  // Deterministic “random” avatar per id
+	  return `https://i.pravatar.cc/150?u=${id}`;
+	}
 
     function makeTweet(tweet) {
       const card = document.createElement("div");
@@ -984,11 +1115,14 @@
       const text = `Bet: ${tweet.bet} Odds: ${pct}%.${tail ? " " + tail : ""}`;
 
       card.innerHTML = `
-        <div class="stamp like">LIKE</div>
+        <div class="bet-timer" hidden>Bet ends in: 8s</div>
+		<div class="stamp like">LIKE</div>
         <div class="stamp nope">NOPE</div>
 
         <div class="top-row">
-          <div class="avatar"></div>
+          <div class="avatar">
+			  <img src="${getAvatarUrl(tweet.id)}" alt="${tweet.name}">
+			</div>
           <div class="content">
             <div class="name-line">
               <span class="name">${tweet.name}</span>
@@ -1032,7 +1166,40 @@
       }
 
       filtered.forEach(t => feed.appendChild(makeTweet(t)));
+	  startFirstCardTimer();
     }
+
+	 function startFirstCardTimer() {
+	  // ⛔ Timer already assigned to a card → do nothing
+	  if (timedCardId) return;
+
+	  const firstCard = feed.querySelector(".tweet-card");
+	  if (!firstCard) return;
+
+	  // 🔒 Lock the timer to THIS card forever (until removed)
+	  timedCardId = firstCard.dataset.tid;
+
+	  const timerEl = firstCard.querySelector(".bet-timer");
+	  if (!timerEl) return;
+
+	  firstCardSeconds = 8;
+	  timerEl.hidden = false;
+	  timerEl.textContent = `Bet ends in: ${firstCardSeconds}s`;
+
+	  firstCardTimerInterval = setInterval(() => {
+		firstCardSeconds--;
+		timerEl.textContent = `Bet ends in: ${firstCardSeconds}s`;
+
+		if (firstCardSeconds <= 0) {
+		  clearInterval(firstCardTimerInterval);
+		  firstCardTimerInterval = null;
+
+		  autoSlideLeft(firstCard);
+		}
+	  }, 1000);
+	}
+
+
 
     function enableSwipe(card) {
       const likeStamp = card.querySelector(".stamp.like");
@@ -1085,10 +1252,17 @@
         dragging = false;
 
         const dir = dx > 0 ? 1 : -1;
-
+		
+		if (card.dataset.tid === timedCardId && firstCardTimerInterval) {
+		  clearInterval(firstCardTimerInterval);
+		  firstCardTimerInterval = null;
+		}
+		
         if (Math.abs(dx) > threshold) {
           if (dx > 0) triggerCombo();
-
+          if (card.dataset.tid === timedCardId) {
+		  timedCardId = null;
+		}
           // mark dismissed for future filtering renders
           const tid = card.dataset.tid;
           if (tid) dismissedIds.add(tid);
@@ -1123,7 +1297,11 @@
 
     function resetFeed() {
       dismissedIds.clear();
-
+		boosterActive = false;
+		boosterSeconds = 0;
+		clearInterval(boosterInterval);
+		boosterInterval = null;
+		boosterTimerEl.hidden = true;
       rightSwipeCombo = 0;
       betCents = 0;
       balanceCents = 1000;
@@ -1154,13 +1332,23 @@
 
     function triggerCombo() {
       // 1 cent bet placed
-      betCents += 1;
-      balanceCents = Math.max(0, balanceCents - 1);
+      const betValue = boosterActive ? 2 : 1;
+
+		betCents += betValue;
+		balanceCents = Math.max(0, balanceCents - betValue);
 
       updateRightCounter();
       updateBalance();
 
       rightSwipeCombo++;
+	  if (rightSwipeCombo === 3) {
+	  const vv = window.visualViewport;
+	  const cx = vv ? (vv.width / 2 + vv.offsetLeft) : (window.innerWidth / 2);
+	  const cy = vv ? (vv.height * 0.45 + vv.offsetTop) : (window.innerHeight * 0.45);
+
+	  spawnComboBox("BOOSTER 2X", cx, cy, 2250, true, true);
+	  startBooster();
+	  }
 
       clearTimeout(comboTimeout);
       comboTimeout = setTimeout(() => (rightSwipeCombo = 0), 60000);
@@ -1174,20 +1362,48 @@
       const cx = vv ? (vv.width / 2 + vv.offsetLeft) : (window.innerWidth / 2);
       const cy = vv ? (vv.height * 0.45 + vv.offsetTop) : (window.innerHeight * 0.45);
 
-      spawnBurst(cx, cy);
-      spawnComboBox(`${label}  x${rightSwipeCombo}`, cx, cy);
+		spawnBurst(cx, cy);
+
+		if (rightSwipeCombo !== 3) {
+		  spawnComboBox(`${label}  x${rightSwipeCombo}`, cx, cy);
+		}
 
       /* Show popup AFTER combo box animation finishes (first bet only) */
       if (betCents === 1) {
         setTimeout(openFirstBetModal, 760);
       }
     }
+	
+	function startBooster(extraMs = 0) {
+	  if (boosterActive) return;
 
-    function spawnComboBox(text, x, y) {
+	  boosterActive = true;
+	  boosterSeconds = 30;
+	  boosterTimerEl.hidden = false;
+	  boosterTimerEl.textContent = `2X: ${boosterSeconds}s`;
+
+	  boosterInterval = setInterval(() => {
+		boosterSeconds--;
+		boosterTimerEl.textContent = `2X: ${boosterSeconds}s`;
+
+		if (boosterSeconds <= 0) {
+		  clearInterval(boosterInterval);
+		  boosterInterval = null;
+
+		  setTimeout(() => {
+			boosterActive = false;
+			boosterTimerEl.hidden = true;
+		  }, extraMs);
+		}
+	  }, 1000);
+	}
+
+    function spawnComboBox(text, x, y, duration = 750, isLong = false, isBooster = false) {
       const box = document.createElement("div");
       box.className = "combo-box";
       box.textContent = text;
-
+      if (isLong) box.classList.add("long");
+      if (isBooster) box.classList.add("booster");
       box.style.opacity = "0";
       document.body.appendChild(box);
 
@@ -1210,7 +1426,7 @@
 
       box.style.opacity = "";
 
-      setTimeout(() => box.remove(), 750);
+      setTimeout(() => box.remove(), duration);
     }
 
     function spawnBurst(x, y) {
@@ -1241,6 +1457,28 @@
         setTimeout(() => p.remove(), 700);
       }
     }
+	
+	function autoSlideLeft(card) {
+	  if (card.dataset.tid === timedCardId) {
+	  timedCardId = null;
+	}
+	  const flyX = -(window.innerWidth + 300);
+
+	  card.style.transition =
+		"transform 0.32s cubic-bezier(.18,.95,.22,1), opacity 0.32s ease";
+	  card.style.transform = `translate(${flyX}px, 0) rotate(-26deg)`;
+	  card.style.opacity = "0";
+
+	  const tid = card.dataset.tid;
+	  if (tid) dismissedIds.add(tid);
+
+	  setTimeout(() => {
+		card.remove();
+		if (feed.querySelectorAll(".tweet-card").length === 0) {
+		  renderFeed();
+		}
+	  }, 280);
+	}
 
     /* Nav positioning */
     const bottomNav = document.getElementById("bottomNav");
