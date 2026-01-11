@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CrowdBet</title>
-
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;700;900&display=swap" rel="stylesheet">
   <!-- Bootstrap Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
@@ -20,8 +20,8 @@
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body {
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+	body {
+	  font-family: "Inter Tight", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
 
       /* darker background */
       background:
@@ -52,7 +52,7 @@
       max-width: 420px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 6px;
       padding-bottom: 0; /* set dynamically for navbar */
     }
 
@@ -69,6 +69,113 @@
       top: 12px;
       z-index: 50;
     }
+	
+	/* Odds pill — corner-attached */
+	.odds-pill {
+	  transition: transform 0.2s ease, opacity 0.2s ease;
+	  position: absolute;
+	  bottom: 0;
+	  right: 0;
+
+	  display: inline-flex;
+	  align-items: center;
+
+	  padding: 5px 14px;
+
+	  font-size: 12px;
+	  font-weight: 900;
+	  letter-spacing: 0.4px;
+
+	  color: #fff;
+
+	  /* ONLY outer corner rounded */
+	  border-radius: 14px 0 10px 0;
+
+	  background:
+		radial-gradient(circle at 30% 20%, rgba(255,255,255,0.45), rgba(255,255,255,0) 45%),
+		linear-gradient(180deg, #a855f7 0%, #7c3aed 55%, #4c1d95 100%);
+
+	  box-shadow:
+		inset 0 1px 0 rgba(255,255,255,0.25),
+		0 -2px 0 rgba(0,0,0,0.18);
+
+	  -webkit-text-stroke: 0.4px rgba(70,30,120,0.35);
+	  text-shadow:
+		0 1px 0 rgba(0,0,0,0.25),
+		0 0 8px rgba(255,255,255,0.35);
+
+	  pointer-events: none;
+	  user-select: none;
+}
+
+		/* Stronger odds spark */
+		.odds-spark {
+		  position: absolute;
+		  width: 10px;
+		  height: 10px;
+		  border-radius: 999px;
+
+		  background: radial-gradient(
+			circle,
+			rgba(255,255,255,1) 0%,
+			rgba(168,85,247,0.95) 45%,
+			rgba(168,85,247,0.7) 70%,
+			rgba(168,85,247,0) 100%
+		  );
+
+		  box-shadow:
+			0 0 14px rgba(168,85,247,1),
+			0 0 28px rgba(168,85,247,0.8),
+			0 0 48px rgba(168,85,247,0.6);
+
+		  pointer-events: none;
+
+		  animation: oddsSpark 0.6s cubic-bezier(.2,.9,.2,1) forwards;
+		}
+
+		@keyframes oddsSpark {
+		  0% {
+			transform: translate(0, 0) scale(1);
+			opacity: 1;
+		  }
+		  70% {
+			opacity: 1;
+		  }
+		  100% {
+			transform: translate(var(--x), var(--y)) scale(0.25);
+			opacity: 0;
+		  }
+		}
+
+		/* Odds glow wave */
+		.odds-wave {
+		  position: absolute;
+		  inset: -6px;
+		  border-radius: inherit;
+
+		  background: radial-gradient(
+			circle,
+			rgba(168,85,247,0.45) 0%,
+			rgba(168,85,247,0.25) 30%,
+			rgba(168,85,247,0.12) 45%,
+			rgba(168,85,247,0) 70%
+		  );
+
+		  animation: oddsWave 0.45s ease-out forwards;
+		  pointer-events: none;
+		}
+
+		@keyframes oddsWave {
+		  from {
+			transform: scale(0.7);
+			opacity: 0.9;
+		  }
+		  to {
+			transform: scale(1.25);
+			opacity: 0;
+		  }
+		}
+
 
     .header h1 {
       font-size: 16px;
@@ -78,6 +185,35 @@
       gap: 8px;
       padding-top: 4px;
     }
+
+	.odds-meta {
+	  display: inline-flex;
+	  align-items: center;
+	  gap: 4px;
+
+	  margin-right: 8px;
+
+	  font-size: 10px;
+	  font-weight: 600;
+
+	  color: rgba(255,255,255,0.55);
+	}
+
+	.odds-meta i {
+	  font-size: 11px;
+	  opacity: 0.75;
+	}
+
+	.bets-count {
+	  min-width: 18px;
+	  text-align: right;
+	}
+
+	.odds-value {
+	  white-space: nowrap;
+	}
+
+
 
     .logo {
       width: 18px;
@@ -112,7 +248,6 @@
         radial-gradient(circle at 30% 20%, rgba(255,255,255,0.55), rgba(255,255,255,0) 45%),
         linear-gradient(180deg, #a855f7 0%, #7c3aed 50%, #4c1d95 100%);
 
-      border: 2px solid rgba(255,255,255,0.70);
 
       box-shadow:
         0 6px 0 rgba(0,0,0,0.16),
@@ -255,6 +390,22 @@
         0 12px 26px rgba(0,0,0,0.45),
         0 0 22px rgba(168,85,247,0.14);
     }
+	
+	/* Bet pill flash */
+	.pill.flash {
+	  filter: brightness(1.25) saturate(1.1);
+	}
+
+	/* Bet number bump */
+	#rightCounter.bump {
+	  animation: betBump 0.28s cubic-bezier(.2,.9,.2,1);
+	}
+
+	@keyframes betBump {
+	  0%   { transform: translateY(0) scale(1); }
+	  40%  { transform: translateY(-2px) scale(1.06); }
+	  100% { transform: translateY(0) scale(1); }
+	}
 
     .cat-chip.active .dot {
       background: rgba(255,255,255,0.85);
@@ -769,6 +920,43 @@
       cursor: pointer;
       user-select: none;
     }
+	
+	
+		.odds-pill.flash {
+	  filter: brightness(1.35) saturate(1.15);
+	}
+	.odds-value.bump {
+	  animation: oddsBump 0.28s cubic-bezier(.2,.9,.2,1);
+	}
+
+	@keyframes oddsBump {
+	  0%   { transform: translateY(0) scale(1); }
+	  40%  { transform: translateY(-2px) scale(1.06); }
+	  100% { transform: translateY(0) scale(1); }
+	}
+	
+	.modal-icon {
+	  width: 84px;
+	  height: 84px;
+	  margin: 6px auto 10px;
+
+	  display: grid;
+	  place-items: center;
+
+	  border-radius: 18px;
+
+	  color: #fff;
+	}
+
+	.modal-icon i {
+	  font-size: 84px;
+	  line-height: 1;
+
+	  -webkit-text-stroke: 0.6px rgba(70,30,120,0.35);
+	  text-shadow:
+		0 2px 0 rgba(0,0,0,0.25),
+		0 0 10px rgba(255,255,255,0.45);
+	}
 
     /* --- Swipe tutorial (2s) --- */
 	.swipe-hint {
@@ -887,6 +1075,15 @@
     }
 
     [hidden] { display: none !important; }
+	
+	.odds-pill,
+	.pill,
+	.combo-box,
+	.booster-timer {
+	  font-variant-numeric: tabular-nums;
+	}
+	
+	
   </style>
 </head>
 
@@ -912,7 +1109,11 @@
   <!-- First bet popup -->
   <div id="firstBetModal" class="modal-overlay" hidden>
     <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="firstBetTitle">
-      <div class="modal-title" id="firstBetTitle">Bet confirmed</div>
+		  <div class="modal-icon">
+			<i class="bi bi-coin"></i>
+		  </div>
+
+		  <div class="modal-title" id="firstBetTitle">Bet confirmed</div>
       <div class="modal-body">
         You just made your first 1-cent bet! Bet 2 more times to get a 2x booster
       </div>
@@ -1011,9 +1212,9 @@
 	let boosterActive = false;
 	let boosterSeconds = 0;
 	let boosterInterval = null;
-	// First card countdown (8s)
+	// First card countdown (6s)
 	let firstCardTimerInterval = null;
-	let firstCardSeconds = 8;
+	let firstCardSeconds = 6;
 	let firstCardActive = false;
 	let timedCardId = null;
 
@@ -1032,9 +1233,10 @@
       return "$" + (cents / 100).toFixed(2);
     }
 
-    function updateRightCounter() {
-      rightCounterEl.textContent = formatMoneyFromCents(betCents);
-    }
+	function updateRightCounter() {
+	  rightCounterEl.textContent = formatMoneyFromCents(betCents);
+	  animateBetUpdate();
+	}
 
     function updateBalance() {
       balanceEl.textContent = formatMoneyFromCents(balanceCents);
@@ -1112,10 +1314,10 @@
 
       const pct = oddsToPercent(tweet.odds);
       const tail = (tweet.tail || "").trim();
-      const text = `Bet: ${tweet.bet} Odds: ${pct}%.${tail ? " " + tail : ""}`;
+      const text = `Bet: ${tweet.bet}.${tail ? " " + tail : ""}`;
 
       card.innerHTML = `
-        <div class="bet-timer" hidden>Bet ends in: 8s</div>
+        <div class="bet-timer" hidden>Bet ends in: 6s</div>
 		<div class="stamp like">LIKE</div>
         <div class="stamp nope">NOPE</div>
 
@@ -1131,12 +1333,16 @@
             </div>
 
             <div class="tweet-text">${text}</div>
-
-            <div class="meta">
-              <span>💬 ${tweet.replies}</span>
-              <span>🔁 ${tweet.reposts}</span>
-              <span>❤️ ${tweet.likes}</span>
-            </div>
+            <div class="odds-pill"
+				 data-odds="${pct}"
+				 data-bets="${141 + Math.floor(Math.random() * 120)}">
+			  <span class="odds-meta">
+				<i class="bi bi-coin"></i>
+				<span class="bets-count"></span>
+			  </span>
+			  <span class="odds-value">ODDS: ${pct}%</span>
+			</div>
+            
           </div>
         </div>
       `;
@@ -1165,8 +1371,10 @@
         return;
       }
 
-      filtered.forEach(t => feed.appendChild(makeTweet(t)));
-	  startFirstCardTimer();
+		filtered.forEach(t => feed.appendChild(makeTweet(t)));
+
+		initOddsMeta();        // 👈 initialize bet counts
+		startFirstCardTimer();
     }
 
 	 function startFirstCardTimer() {
@@ -1182,7 +1390,7 @@
 	  const timerEl = firstCard.querySelector(".bet-timer");
 	  if (!timerEl) return;
 
-	  firstCardSeconds = 8;
+	  firstCardSeconds = 6;
 	  timerEl.hidden = false;
 	  timerEl.textContent = `Bet ends in: ${firstCardSeconds}s`;
 
@@ -1458,6 +1666,40 @@
       }
     }
 	
+	function spawnOddsSpark(pill) {
+	  // === SPARK ===
+	  const spark = document.createElement("div");
+	  spark.className = "odds-spark";
+
+	  // Bias direction outward (up/right mostly)
+	  const angle =
+		-Math.PI / 2 + (Math.random() - 0.5) * Math.PI * 0.6;
+
+	  const distance = 18 + Math.random() * 22;
+
+	  const dx = Math.cos(angle) * distance;
+	  const dy = Math.sin(angle) * distance;
+
+	  spark.style.setProperty("--x", dx + "px");
+	  spark.style.setProperty("--y", dy + "px");
+
+	  spark.style.left = "50%";
+	  spark.style.top = "50%";
+	  spark.style.transform = "translate(-50%, -50%)";
+
+	  pill.appendChild(spark);
+
+	  setTimeout(() => spark.remove(), 650);
+
+	  // === GLOW WAVE ===
+	  const wave = document.createElement("div");
+	  wave.className = "odds-wave";
+	  pill.appendChild(wave);
+
+	  setTimeout(() => wave.remove(), 450);
+	}
+	
+	
 	function autoSlideLeft(card) {
 	  if (card.dataset.tid === timedCardId) {
 	  timedCardId = null;
@@ -1493,28 +1735,137 @@
     }
 
     function positionBottomNav() {
-      const vv = window.visualViewport;
-      const vw = vv ? vv.width : window.innerWidth;
-      const vh = vv ? vv.height : window.innerHeight;
-      const ox = vv ? vv.offsetLeft : 0;
-      const oy = vv ? vv.offsetTop : 0;
+		  const vv = window.visualViewport;
+		  const vw = vv ? vv.width : window.innerWidth;
+		  const vh = vv ? vv.height : window.innerHeight;
+		  const ox = vv ? vv.offsetLeft : 0;
+		  const oy = vv ? vv.offsetTop : 0;
 
-      bottomNav.style.width = vw + "px";
-      bottomNav.style.left = ox + "px";
+		  bottomNav.style.width = vw + "px";
+		  bottomNav.style.left = ox + "px";
 
-      const navH = bottomNav.offsetHeight;
-      bottomNav.style.top = (oy + vh - navH) + "px";
+		  const navH = bottomNav.offsetHeight;
+		  bottomNav.style.top = (oy + vh - navH) + "px";
 
-      app.style.paddingBottom = (navH + 18) + "px";
-    }
+		  app.style.paddingBottom = (navH + 18) + "px";
+		}
 
-    positionBottomNav();
+		positionBottomNav();
 
-    if (window.visualViewport) {
-      window.visualViewport.addEventListener("resize", scheduleNavPosition);
-      window.visualViewport.addEventListener("scroll", scheduleNavPosition);
-    }
-    window.addEventListener("resize", scheduleNavPosition);
+		if (window.visualViewport) {
+		  window.visualViewport.addEventListener("resize", scheduleNavPosition);
+		  window.visualViewport.addEventListener("scroll", scheduleNavPosition);
+		}
+	window.addEventListener("resize", scheduleNavPosition);
+		
+		
+		
+		function animateBetUpdate() {
+		  const pill = document.querySelector(".pill");
+		  const counter = document.getElementById("rightCounter");
+		  if (!pill || !counter) return;
+
+		  // Pill pop + flash
+		  pill.style.transform = "scale(1.06)";
+		  pill.classList.add("flash");
+
+		  // Number bump
+		  counter.classList.remove("bump");
+		  void counter.offsetWidth; // restart animation
+		  counter.classList.add("bump");
+
+		  // Reset
+		  setTimeout(() => {
+			pill.style.transform = "scale(1)";
+			pill.classList.remove("flash");
+		  }, 180);
+		}
+
+		
+		function initOddsMeta() {
+		  document.querySelectorAll(".odds-pill").forEach(pill => {
+			const bets = Number(pill.dataset.bets);
+			const el = pill.querySelector(".bets-count");
+			if (el && Number.isFinite(bets)) {
+			  el.textContent = bets;
+			}
+		  });
+		}
+		
+		
+		function startLiveOddsFluctuation() {
+		  const MIN = 5.0;
+		  const MAX = 95.0;
+
+		  function scheduleForPill(pill) {
+			function update() {
+			  let current = Number(pill.dataset.odds);
+			  if (!Number.isFinite(current)) return;
+
+			  // Random delta between 0.2 and 2.5
+			  const magnitude = 0.2 + Math.random() * 2.3;
+			  const direction = Math.random() < 0.5 ? -1 : 1;
+			  let next = current + direction * magnitude;
+
+			  // Clamp
+			  next = Math.max(MIN, Math.min(MAX, next));
+
+			  // Round to 1 decimal
+			  next = Math.round(next * 10) / 10;
+
+			pill.dataset.odds = next;
+
+			// ---- bets count logic ----
+			let bets = Number(pill.dataset.bets);
+			if (!Number.isFinite(bets)) bets = 141;
+
+			// Increase by small random amount
+			bets += 1 + Math.floor(Math.random() * 4);
+			pill.dataset.bets = bets;
+
+			// Update DOM
+			pill.querySelector(".bets-count").textContent = bets;
+			pill.querySelector(".odds-value").textContent = `ODDS: ${next}%`;
+
+			// Visual effect
+			spawnOddsSpark(pill);
+
+			// --- stronger visual feedback ---
+
+			// 1) Pill pop
+			pill.style.transform = "scale(1.08)";
+			pill.classList.add("flash");
+
+			// 2) Animate the number itself
+			const oddsEl = pill.querySelector(".odds-value");
+			if (oddsEl) {
+			  oddsEl.classList.remove("bump");
+			  void oddsEl.offsetWidth; // reflow to restart animation
+			  oddsEl.classList.add("bump");
+			}
+
+			// Reset visuals quickly
+			setTimeout(() => {
+			  pill.style.transform = "scale(1)";
+			  pill.classList.remove("flash");
+			}, 180);
+
+			  // Reschedule THIS pill only (3–8s)
+			  const nextIn = 3000 + Math.random() * 5000;
+			  setTimeout(update, nextIn);
+			}
+
+			// Staggered initial delay (prevents sync on load)
+			const initialDelay = 1000 + Math.random() * 4000;
+			setTimeout(update, initialDelay);
+		  }
+
+		  // Attach an independent loop to each pill
+		  document.querySelectorAll(".odds-pill").forEach(scheduleForPill);
+		}
+
+	startLiveOddsFluctuation();
+
   </script>
 </body>
 </html>
