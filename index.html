@@ -7,6 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;700;900&display=swap" rel="stylesheet">
   <!-- Bootstrap Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Annie+Use+Your+Telescope&display=swap" rel="stylesheet">
 
   <style>
     :root {
@@ -54,7 +55,16 @@
       flex-direction: column;
       gap: 6px;
       padding-bottom: 0; /* set dynamically for navbar */
+	    position: relative;
+		z-index: 1;
     }
+	
+	.logo-img {
+	  width: 50px;
+	  height: 27px;
+	  display: block;
+	  vertical-align: middle;
+	}
 
     .header {
       display: flex;
@@ -64,8 +74,7 @@
       border-radius: 16px;
       background: transparent;
       border: none;
-      backdrop-filter: blur(10px);
-      position: sticky;
+      position: relative;
       top: 12px;
       z-index: 50;
     }
@@ -176,15 +185,186 @@
 		  }
 		}
 
+		/* Comment badge */
+		.comment-toggle {
+		  position: absolute;
+		  bottom: 3px;
+		  left: 3px;
+
+		  display: inline-flex;
+		  align-items: center;
+		  gap: 6px;
+
+		  padding: 6px 10px;
+		  border-radius: 999px;
+
+		  font-size: 12px;
+		  font-weight: 800;
+
+		  background: rgba(255,255,255,0.08);
+		  border: 1px solid rgba(255,255,255,0.14);
+		  color: #e6edf3;
+
+		  cursor: pointer;
+		  z-index: 5;
+		}
+
+		.comment-toggle i {
+		  font-size: 14px;
+		}
+
+		.comment-count {
+		  background: #7c3aed;
+		  color: #fff;
+		  border-radius: 999px;
+		  padding: 2px 7px;
+		  font-size: 11px;
+		}
+
+		/* Accordion container */
+		.comment-accordion {
+		  margin-top: 14px;
+		  margin-bottom:30px;
+		  display: flex;
+		  background: rgba(255, 255, 255, 0.08);
+		  padding:10px;
+		  border-radius:10px;
+		  flex-direction: column;
+		  gap: 6px;
+		}
+
+		/* Chat bubbles */
+		.chat {
+		  max-width: 80%;
+		  padding: 8px 12px;
+		  border-radius: 14px;
+		  font-size: 13px;
+		  line-height: 1.35;
+		}
+
+		/* Chat rows */
+		.chat-row {
+		  display: flex;
+		  align-items: flex-end;
+		  gap: 6px;
+		  max-width: 100%;
+		}
+
+		.chat-row.right {
+		  flex-direction: row-reverse;
+		}
+
+		/* Avatars */
+		.chat-avatar {
+		  width: 22px;
+		  height: 22px;
+		  border-radius: 999px;
+		  object-fit: cover;
+		  flex-shrink: 0;
+		  border: 1px solid rgba(255,255,255,0.18);
+		}
+
+		/* Bubble container */
+		.chat-bubble {
+		  max-width: 75%;
+		  padding: 7px 10px;
+		  border-radius: 14px;
+		  font-size: 12.5px;
+		  line-height: 1.35;
+		}
+
+		/* Name */
+		.chat-name {
+		  font-size: 11px;
+		  font-weight: 800;
+		  opacity: 0.75;
+		  margin-bottom: 2px;
+		}
+
+		/* Message text */
+		.chat-text {
+		  font-size: 12.5px;
+		}
+
+		/* Left bubble */
+		.chat-row.left .chat-bubble {
+		  background: rgba(255,255,255,0.08);
+		  border-top-left-radius: 4px;
+		}
+
+		/* Right bubble */
+		.chat-row.right .chat-bubble {
+		  background: linear-gradient(180deg, #7c3aed, #5b21b6);
+		  color: #fff;
+		  border-top-right-radius: 4px;
+		}
+
+		.chat.left {
+		  align-self: flex-start;
+		  background: rgba(255,255,255,0.08);
+		  border-top-left-radius: 4px;
+		}
+
+		.chat.right {
+		  align-self: flex-end;
+		  background: linear-gradient(180deg, #7c3aed, #5b21b6);
+		  border-top-right-radius: 4px;
+		  color: #fff;
+		}
+
+
+		@keyframes dangerShake {
+		  0%   { transform: translate(0, 0) rotate(0deg); }
+		  20%  { transform: translate(-2px, 1px) rotate(-1deg); }
+		  40%  { transform: translate(2px, -1px) rotate(1deg); }
+		  60%  { transform: translate(-2px, 1px) rotate(-1deg); }
+		  80%  { transform: translate(2px, -1px) rotate(1deg); }
+		  100% { transform: translate(0, 0) rotate(0deg); }
+		}
+
+		.bet-timer.danger {
+		  animation: dangerShake 0.35s ease-in-out infinite;
+		  box-shadow:
+			0 0 12px rgba(255,92,135,0.55),
+			0 0 26px rgba(255,92,135,0.35);
+		}
+
+
 
     .header h1 {
       font-size: 16px;
       letter-spacing: 0.4px;
       display: flex;
+	  font-weight:900;
       align-items: center;
       gap: 8px;
       padding-top: 4px;
     }
+	
+	.tweet-card .content {
+	  padding-bottom: 16px; /* space reserved for odds pill */
+	}
+	
+	
+	.tweet-context {
+	  margin-top: 6px;
+	  font-size: 12px;
+	  line-height: 1.5;
+	  color: rgba(230, 237, 243, 0.58);
+	}
+
+	.context-more,
+	.context-less {
+	  margin-left: 4px;
+	  font-weight: 700;
+	  color: #c4b5fd;
+	  cursor: pointer;
+	}
+
+	.context-more:hover,
+	.context-less:hover {
+	  text-decoration: underline;
+	}
 
 	.odds-meta {
 	  display: inline-flex;
@@ -213,7 +393,25 @@
 	  white-space: nowrap;
 	}
 
+	.mystery-icon {
+	  width:92px;
+	  height:92px;
+	  display:grid;
+	  place-items:center;
+	  font-size:82px;
+	  color:#fff;
 
+	  animation: giftWiggle 2s ease-in-out infinite;
+	  transform-origin: center;
+	}
+
+	@keyframes giftWiggle {
+	  0%   { transform: rotate(0deg); }
+	  10%  { transform: rotate(-6deg) scale(1.03); }
+	  20%  { transform: rotate(6deg) scale(1.05); }
+	  30%  { transform: rotate(0deg) scale(1); }
+	  100% { transform: rotate(0deg); }
+	}
 
     .logo {
       width: 18px;
@@ -266,6 +464,13 @@
       font-weight: 400;
       white-space: nowrap;
     }
+	
+	.mystery-box {
+	  background: transparent !important;
+	  border: none !important;
+	  box-shadow: none !important;
+	  padding: 8px 6px;
+	}
 
     .pill::before {
       content: "";
@@ -300,27 +505,32 @@
 
     /* balance outside the pill */
     .balance-under {
-      margin-top: 2px;
+      margin-top: 4px;
       width: 100%;            /* match pill width */
       text-align: center;     /* center under pill */
       font-size: 10px;
-      opacity: 0.9;
+      opacity: 0.5;
       letter-spacing: 0.2px;
       white-space: nowrap;
     }
+	.tweet-context {
+	  margin-top: 6px;
+	  font-size: 12px;
+	  line-height: 1.5;
+	  color: rgba(230, 237, 243, 0.58);
+	}
 
     /* Categories row */
-    .category-bar {
-	  width: 100vw;                 /* ✅ full screen width */
-  margin-left: calc(50% - 50vw);/* ✅ break out of centered container */
-  padding-left: 16px;           /* keep same side padding as body */
+.category-bar {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  padding-left: 16px;
   padding-right: 16px;
-      position: sticky;
-      top: 64px; /* sits under the sticky header */
-      z-index: 49;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-    }
+
+  position: relative;
+  z-index: 1;
+
+}
 
     .cat-scroll {
       display: flex;
@@ -518,6 +728,16 @@
       border-color: rgba(89,255,160,0.8);
       background: rgba(89,255,160,0.08);
     }
+	
+	.tweet-card.mystery-box {
+		backdrop-filter:none;
+		margin:auto;
+	}
+	
+	.tweet-card.mystery-box .name {
+		font-family: "Annie Use Your Telescope", cursive;
+		font-size:34px;
+	}
 
     .stamp.nope {
       right: 14px;
@@ -750,6 +970,11 @@
       border-radius: 0;
     }
 
+	.mystery-open:active {
+	  transform: scale(0.97);
+	  filter: brightness(1.1);
+	}
+
     .bottom-nav-inner {
       width: min(420px, 100%);
       margin: 0 auto;
@@ -765,7 +990,7 @@
       gap: 6px;
       font-size: 12px;
       color: #9aa4b2;
-      min-width: 92px;
+      min-width: 72px;
     }
 
     .nav-icon {
@@ -830,7 +1055,6 @@
         radial-gradient(circle at 30% 20%, rgba(255,255,255,0.55), rgba(255,255,255,0) 45%),
         linear-gradient(180deg, #a855f7 0%, #7c3aed 50%, #4c1d95 100%);
 
-      border: 3px solid rgba(255,255,255,0.78);
 
       box-shadow:
         0 10px 0 rgba(0,0,0,0.18),
@@ -1083,11 +1307,65 @@
 	  font-variant-numeric: tabular-nums;
 	}
 	
+	/* --- Ambient background particles --- */
+	.bg-particles {
+	  position: fixed;
+	  inset: 0;
+	  z-index: 0;
+	  pointer-events: none;
+	  overflow: hidden;
+	}
+
+	/* single coin */
+	.bg-coin {
+	  position: absolute;
+	  border-radius: 50%;
+
+	  background:
+		radial-gradient(circle at 30% 30%,
+		  rgba(255,255,255,0.35),
+		  rgba(255,255,255,0.15) 40%,
+		  rgba(168,85,247,0.25) 65%,
+		  rgba(168,85,247,0.05) 100%
+		),
+		linear-gradient(135deg, #a855f7, #7c3aed);
+
+	  opacity: 0.08; /* 🔑 keep subtle */
+	  filter: blur(0.2px);
+
+	  animation: floatCoin linear infinite;
+	}
+
+	/* slow drifting motion */
+	@keyframes floatCoin {
+	  0% {
+		transform: translate3d(0, 0, 0) rotate(0deg);
+		opacity: 0.05;
+	  }
+	  25% {
+		transform: translate3d(calc(var(--dx) * 0.3), calc(var(--dy) * 0.3), 0) rotate(90deg);
+		opacity: 0.08;
+	  }
+	  50% {
+		transform: translate3d(calc(var(--dx) * 0.6), calc(var(--dy) * 0.6), 0) rotate(180deg);
+		opacity: 0.1;
+	  }
+	  75% {
+		transform: translate3d(calc(var(--dx) * 0.9), calc(var(--dy) * 0.9), 0) rotate(270deg);
+		opacity: 0.08;
+	  }
+	  100% {
+		transform: translate3d(var(--dx), var(--dy), 0) rotate(360deg);
+		opacity: 0.05;
+	  }
+	}
+	
 	
   </style>
 </head>
 
 <body>
+  <div id="bgParticles" class="bg-particles"></div>
   <div id="particles" class="particles"></div>
   <div id="comboLayer" class="particles"></div>
 
@@ -1123,10 +1401,31 @@
       </div>
     </div>
   </div>
+  
+  <div id="mysteryModal" class="modal-overlay" hidden>
+  <div class="modal-card" role="dialog" aria-modal="true">
+    <div class="modal-icon">
+      <i class="bi bi-gift-fill"></i>
+    </div>
+
+    <div class="modal-title">YOU’VE WON</div>
+
+    <div class="modal-body">
+      Bonus unlocked. Your rewards have been added 🎁
+    </div>
+
+    <div class="modal-actions">
+      <button class="modal-ok" id="mysteryOk">OK</button>
+    </div>
+  </div>
+</div>
 
   <div class="app" id="app">
     <div class="header">
-      <h1><span class="logo"></span> CrowdBet</h1>
+     <h1>
+	  <img src="logo.png" alt="CrowdBet logo" class="logo-img">
+	  CROWDBET
+	</h1>
       <div id="boosterTimer" class="booster-timer" hidden>30s</div>
       <div style="display:flex; flex-direction:column; align-items:flex-end;">
         <div class="pill">
@@ -1146,20 +1445,27 @@
   </div>
 
   <div class="bottom-nav" id="bottomNav">
-    <div class="bottom-nav-inner">
-      <div class="nav-item active">
-        <div class="nav-icon"><i class="bi bi-house"></i></div>
-        <div>Home</div>
-      </div>
-      <div class="nav-item">
-        <div class="nav-icon"><i class="bi bi-coin"></i></div>
-        <div>Bet</div>
-      </div>
-      <div class="nav-item">
-        <div class="nav-icon"><i class="bi bi-person-circle"></i></div>
-        <div>Profile</div>
-      </div>
-    </div>
+		<div class="bottom-nav-inner">
+	  <div class="nav-item active">
+		<div class="nav-icon"><i class="bi bi-house"></i></div>
+		<div>Home</div>
+	  </div>
+
+	  <div class="nav-item">
+		<div class="nav-icon"><i class="bi bi-trophy"></i></div>
+		<div>Leaderboard</div>
+	  </div>
+
+	  <div class="nav-item">
+		<div class="nav-icon"><i class="bi bi-coin"></i></div>
+		<div>Bet</div>
+	  </div>
+
+	  <div class="nav-item">
+		<div class="nav-icon"><i class="bi bi-person-circle"></i></div>
+		<div>Profile</div>
+	  </div>
+	</div>
   </div>
 
   <script>
@@ -1172,14 +1478,107 @@
 	  Tech: "bi-cpu",
 	  Other: "bi-stars"
 	};
-    const tweetsData = [
-      { id:"t1", category:"Sports",  name:"Nova Reyes", handle:"@novareyes", time:"2m",  bet:"Argentina wins by 2+ goals tonight.", odds: 185, tail:"Who’s tailing?", replies:12, reposts:48, likes:310 },
-      { id:"t2", category:"Bitcoin", name:"Theo Martinez", handle:"@theom",     time:"8m",  bet:"BTC closes above $50k this week.",   odds: 210, tail:"I’m in.", replies:19, reposts:61, likes:982 },
-      { id:"t3", category:"Weather", name:"Aya K.",       handle:"@aya_k",     time:"12m", bet:"It rains in BA before Friday.",     odds: 160, tail:"Prove me wrong.", replies:8, reposts:33, likes:220 },
-      { id:"t4", category:"Tech",    name:"Milo Chen",    handle:"@miloch",    time:"18m", bet:"The next iPhone announcement mentions “AI” 10+ times.", odds: 130, tail:"", replies:41, reposts:120, likes:1420 },
-      { id:"t5", category:"Sports",  name:"Sienna Park",  handle:"@siennap",   time:"25m", bet:"The under hits on tonight’s game.", odds: 175, tail:"Feeling spicy.", replies:17, reposts:54, likes:610 },
-      { id:"t6", category:"Other",   name:"Ghost in the Shell Script", handle:"@gitscript", time:"33m", bet:"Someone ships a hotfix before lunch.", odds: 145, tail:"😅", replies:6, reposts:22, likes:178 }
-    ];
+	const tweetsData = [
+	  {
+		id: "t1",
+		category: "Sports",
+		name: "Nova Reyes",
+		handle: "@novareyes",
+		time: "2m",
+		bet: "Argentina will win by 2+ goals tonight",
+		context: "Argentina has been dominating possession in recent matches and comes into this game with a much stronger starting lineup than last week. If they score early, the gap should widen quickly in the second half.",
+		odds: 185,
+		replies: 12,
+		reposts: 48,
+		likes: 310,
+		comments: [
+		  { name: "Juan", text: "Argentina is flying lately, this feels safe ⚽️" },
+		  { name: "Sofi", text: "If they score early it’s basically done" },
+		  { name: "Marcos", text: "Defense is solid, I’m in on this one" }
+		]
+	  },
+	  {
+		id: "t2",
+		category: "Bitcoin",
+		name: "Theo Martinez",
+		handle: "@theom",
+		time: "8m",
+		bet: "BTC will close above $50k this week",
+		context: "Bitcoin has respected key support levels all week and funding rates remain neutral, suggesting no excessive leverage. With macro pressure cooling down, a strong weekly close above 50k feels likely.",
+		odds: 210,
+		replies: 19,
+		reposts: 61,
+		likes: 982,
+		comments: [
+		  { name: "Leo", text: "50k is heavy resistance, not so sure" },
+		  { name: "Ana", text: "Funding rates look healthy, could happen" },
+		  { name: "Pablo", text: "Macro looks calmer this week 👀" },
+		  { name: "Mati", text: "Whales might push it before close" },
+		  { name: "Carla", text: "I’m betting small but bullish" }
+		]
+	  },
+	{
+	  id: "t3",
+	  category: "Weather",
+	  name: "Aya K.",
+	  handle: "@aya_k",
+	  time: "12m",
+	  bet: "It will rain in Buenos Aires before Friday",
+	  context: "Humidity has been steadily increasing and the latest forecast models show atmospheric instability building mid-week. Even a brief rainfall would confirm this setup.",
+	  odds: 160,
+	  replies: 8,
+	  reposts: 33,
+	  likes: 220,
+	  comments: [
+	  { name: "Lucía", text: "No chance, it’s been sunny all week ☀️" },
+	  { name: "Tomás", text: "Weather models changed today, looks likely" },
+	  { name: "Martina", text: "I’m in Palermo and clouds are rolling in" },
+	  { name: "Fede", text: "Last forecast said rain Thursday night" },
+	  { name: "Camila", text: "Humidity is crazy rn" },
+	  { name: "Nico", text: "Trusting this one" },
+	  { name: "Vale", text: "Putting a bet on this 🌧️" }
+	]
+	},
+	  {
+		id: "t4",
+		category: "Tech",
+		name: "Milo Chen",
+		handle: "@miloch",
+		time: "18m",
+		bet: "The next iPhone event mentions AI >10 times",
+		context: "Apple has been positioning AI heavily in recent earnings calls and developer updates. Given market expectations and competitive pressure, AI will likely be a dominant theme in the announcement.",
+		odds: 130,
+		replies: 41,
+		reposts: 120,
+		likes: 1420
+	  },
+	  {
+		id: "t5",
+		category: "Sports",
+		name: "Sienna Park",
+		handle: "@siennap",
+		time: "25m",
+		bet: "The under hits in tonight’s game",
+		context: "Both teams play at a slow pace and rank among the lowest in shot attempts per game. With key offensive players out, this matchup sets up well for a low-scoring result.",
+		odds: 175,
+		replies: 17,
+		reposts: 54,
+		likes: 610
+	  },
+	  {
+		id: "t6",
+		category: "Other",
+		name: "Ghost in the Shell Script",
+		handle: "@gitscript",
+		time: "33m",
+		bet: "Someone ships a hotfix before lunch",
+		context: "Production has been unstable all morning and error rates are climbing. Given the team’s past response patterns, a quick hotfix before noon wouldn’t be surprising.",
+		odds: 145,
+		replies: 6,
+		reposts: 22,
+		likes: 178
+	  }
+	];
 
     const feed = document.getElementById("feed");
     const app = document.getElementById("app");
@@ -1208,6 +1607,7 @@
 
     /* Counters (define BEFORE resetFeed runs) */
     let rightSwipeCombo = 0;
+	let firstCardTimerConsumed = false;
     let comboTimeout = null;
 	let boosterActive = false;
 	let boosterSeconds = 0;
@@ -1217,6 +1617,9 @@
 	let firstCardSeconds = 6;
 	let firstCardActive = false;
 	let timedCardId = null;
+	let secondCardTimerSeconds = 65;
+	let secondCardTimerInterval = null;
+	const secondTimedCardId = "t2"; // 👈 second tweet
 
 	const boosterTimerEl = document.getElementById("boosterTimer");
 
@@ -1313,43 +1716,197 @@
       card.dataset.tid = tweet.id;
 
       const pct = oddsToPercent(tweet.odds);
-      const tail = (tweet.tail || "").trim();
-      const text = `Bet: ${tweet.bet}.${tail ? " " + tail : ""}`;
+		const betText = tweet.bet;
+		const contextText = tweet.context;
+		const preview = contextText.slice(0, 50);
+		const needsMore = contextText.length > 50;
 
-      card.innerHTML = `
-        <div class="bet-timer" hidden>Bet ends in: 6s</div>
-		<div class="stamp like">LIKE</div>
-        <div class="stamp nope">NOPE</div>
+	card.innerHTML = `
+	  <div class="bet-timer" hidden>Bet ends in: 6s</div>
+	  <div class="stamp like">LIKE</div>
+	  <div class="stamp nope">NOPE</div>
 
-        <div class="top-row">
-          <div class="avatar">
-			  <img src="${getAvatarUrl(tweet.id)}" alt="${tweet.name}">
-			</div>
-          <div class="content">
-            <div class="name-line">
-              <span class="name">${tweet.name}</span>
-              <span class="handle">${tweet.handle}</span>
-              <span class="time">· ${tweet.time}</span>
-            </div>
+	  <div class="top-row">
+		<div class="avatar">
+		  <img src="${getAvatarUrl(tweet.id)}" alt="${tweet.name}">
+		</div>
 
-            <div class="tweet-text">${text}</div>
-            <div class="odds-pill"
-				 data-odds="${pct}"
-				 data-bets="${141 + Math.floor(Math.random() * 120)}">
-			  <span class="odds-meta">
-				<i class="bi bi-coin"></i>
-				<span class="bets-count"></span>
+		<div class="content">
+		  <div class="name-line">
+			<span class="name">${tweet.name}</span>
+			<span class="handle">${tweet.handle}</span>
+			<span class="time">· ${tweet.time}</span>
+		  </div>
+
+		  <div class="tweet-text">
+			<strong>${tweet.bet}</strong>
+
+			<div class="tweet-context" data-full="${tweet.context}">
+			  <strong>Why?</strong>
+			  <span class="context-preview">
+				${preview}${needsMore ? "…" : ""}
 			  </span>
-			  <span class="odds-value">ODDS: ${pct}%</span>
+			  ${needsMore ? `<span class="context-more"> more</span>` : ""}
 			</div>
-            
-          </div>
-        </div>
-      `;
+		  </div>
 
+		  <div class="odds-pill"
+			   data-odds="${pct}"
+			   data-bets="${141 + Math.floor(Math.random() * 120)}">
+			<span class="odds-meta">
+			  <i class="bi bi-coin"></i>
+			  <span class="bets-count"></span>
+			</span>
+			<span class="odds-value">ODDS: ${pct}%</span>
+		  </div>
+		</div>
+	  </div>
+
+	  ${
+		tweet.comments
+		  ? `
+			<!-- COMMENT BADGE -->
+			<div class="comment-toggle">
+			  <i class="bi bi-chat"></i>
+			  <span class="comment-count">${tweet.comments.length}</span>
+			</div>
+
+			<!-- COMMENT ACCORDION -->
+			<div class="comment-accordion" hidden>
+			  ${tweet.comments
+				.map((c, i) => `
+				  <div class="chat-row ${i % 2 === 0 ? "left" : "right"}">
+					<img
+					  class="chat-avatar"
+					  src="${getAvatarUrl(tweet.id + "-c" + i)}"
+					  alt="${c.name}"
+					/>
+					<div class="chat-bubble">
+					  <div class="chat-name">${c.name}</div>
+					  <div class="chat-text">${c.text}</div>
+					</div>
+				  </div>
+				`)
+				.join("")}
+			</div>
+		  `
+		  : ""
+	  }
+	`;
+		  // 🔁 Rehydrate timer badge if this is the timed card
+			if (
+			  tweet.id === timedCardId &&
+			  !firstCardTimerConsumed &&
+			  firstCardSeconds > 0
+			) {
+			  const timerEl = card.querySelector(".bet-timer");
+			  if (timerEl) {
+				timerEl.hidden = false;
+				timerEl.textContent = `Bet ends in: ${firstCardSeconds}s`;
+			  }
+			}
+			
+			// 🔁 Rehydrate SECOND timer badge if this is the second timed card
+	if (
+	  tweet.id === secondTimedCardId &&
+	  secondCardTimerInterval &&
+	  secondCardTimerSeconds > 0
+	) {
+	  const timerEl = card.querySelector(".bet-timer");
+	  if (timerEl) {
+		timerEl.hidden = false;
+		timerEl.textContent = `Bet ends in: ${secondCardTimerSeconds}s`;
+
+		// keep danger animation if in last 2s
+		if (secondCardTimerSeconds <= 2) {
+		  timerEl.classList.add("danger");
+		}
+	  }
+	}
+		
       enableSwipe(card);
+	  
+			  // --- Comment accordion toggle ---
+		const commentToggle = card.querySelector(".comment-toggle");
+		const commentAccordion = card.querySelector(".comment-accordion");
+
+		if (commentToggle && commentAccordion) {
+		  commentToggle.addEventListener("click", (e) => {
+			e.stopPropagation(); // prevent swipe
+			commentAccordion.hidden = !commentAccordion.hidden;
+		  });
+		}
+	  
+     const more = card.querySelector(".context-more");
+		if (more) {
+		  more.addEventListener("click", (e) => {
+			e.stopPropagation();
+
+			const ctx = more.closest(".tweet-context");
+			const full = ctx.dataset.full;
+
+			ctx.innerHTML = `
+			  <strong>Why?</strong>
+			  <span class="context-full">${full}</span>
+			  <span class="context-less"> less</span>
+			`;
+
+			ctx.querySelector(".context-less").addEventListener("click", (ev) => {
+			  ev.stopPropagation();
+			  ctx.innerHTML = `
+				<strong>Why?</strong>
+				<span class="context-preview">
+				  ${preview}…
+				</span>
+				<span class="context-more"> more</span>
+			  `;
+			  ctx.querySelector(".context-more").addEventListener("click", more.onclick);
+			});
+		  });
+		}
+	  
       return card;
     }
+	
+	
+	function makeMysteryBox() {
+  const box = document.createElement("div");
+  box.className = "tweet-card mystery-box";
+
+  box.innerHTML = `
+    <div class="top-row">
+      <div class="mystery-icon">
+		  <i class="bi bi-gift-fill"></i>
+		</div>
+
+      <div class="content">
+        <div class="name-line">
+          <span class="name">MYSTERY BOX</span>
+        </div>
+
+        <div
+		  class="pill mystery-open"
+		  id="openMysteryBox"
+		  style="margin-top:14px; cursor:pointer;text-align:center;font-weight:bold"
+		>
+		  <div class="pill-top">OPEN</div>
+		</div>
+      </div>
+    </div>
+  `;
+
+  box.querySelector("#openMysteryBox").addEventListener("click", () => {
+  box.style.transition = "opacity 0.25s ease, transform 0.25s ease";
+  box.style.opacity = "0";
+  box.style.transform = "scale(0.96)";
+
+  setTimeout(() => {
+    box.remove();
+    openMysteryModal();
+  }, 220);
+});
+  return box;
+}
 
     function renderFeed() {
       feed.innerHTML = "";
@@ -1371,41 +1928,140 @@
         return;
       }
 
-		filtered.forEach(t => feed.appendChild(makeTweet(t)));
+		filtered.forEach((t, i) => {
+		  feed.appendChild(makeTweet(t));
+
+		  // Insert mystery box after 3rd tweet
+		  if (i === 2) {
+			feed.appendChild(makeMysteryBox());
+		  }
+		});
 
 		initOddsMeta();        // 👈 initialize bet counts
 		startFirstCardTimer();
+		startSecondCardTimer();
     }
 
-	 function startFirstCardTimer() {
-	  // ⛔ Timer already assigned to a card → do nothing
+	function startFirstCardTimer() {
+	  if (firstCardTimerConsumed) return;
 	  if (timedCardId) return;
 
 	  const firstCard = feed.querySelector(".tweet-card");
 	  if (!firstCard) return;
 
-	  // 🔒 Lock the timer to THIS card forever (until removed)
 	  timedCardId = firstCard.dataset.tid;
+	  firstCardSeconds = 6;
 
 	  const timerEl = firstCard.querySelector(".bet-timer");
-	  if (!timerEl) return;
-
-	  firstCardSeconds = 6;
-	  timerEl.hidden = false;
-	  timerEl.textContent = `Bet ends in: ${firstCardSeconds}s`;
+	  if (timerEl) {
+		timerEl.hidden = false;
+		timerEl.textContent = `Bet ends in: ${firstCardSeconds}s`;
+	  }
 
 	  firstCardTimerInterval = setInterval(() => {
 		firstCardSeconds--;
-		timerEl.textContent = `Bet ends in: ${firstCardSeconds}s`;
+
+		// Update timer text ONLY if card still exists
+		const card = document.querySelector(
+		  `.tweet-card[data-tid="${timedCardId}"]`
+		);
+		const el = card?.querySelector(".bet-timer");
+
+		if (el) {
+		  el.textContent = `Bet ends in: ${firstCardSeconds}s`;
+
+		  // 🔥 dramatic last 2 seconds
+		  if (firstCardSeconds <= 2) {
+			el.classList.add("danger");
+		  }
+		}
 
 		if (firstCardSeconds <= 0) {
 		  clearInterval(firstCardTimerInterval);
 		  firstCardTimerInterval = null;
 
-		  autoSlideLeft(firstCard);
+		  // remove shake/glow if still present
+		  if (el) el.classList.remove("danger");
+
+		  firstCardTimerConsumed = true;
+
+		  dismissTimedCard();
 		}
 	  }, 1000);
 	}
+
+		function dismissTimedCard() {
+		  if (!timedCardId) return;
+
+		  const tid = timedCardId;
+		  timedCardId = null;
+
+		  // Mark as dismissed so filtering can never revive it
+		  dismissedIds.add(tid);
+
+		  // If the card is currently visible, animate it out
+		  const card = document.querySelector(
+			`.tweet-card[data-tid="${tid}"]`
+		  );
+
+		  if (card) {
+			const flyX = -(window.innerWidth + 300);
+			card.style.transition =
+			  "transform 0.32s cubic-bezier(.18,.95,.22,1), opacity 0.32s ease";
+			card.style.transform = `translate(${flyX}px, 0) rotate(-26deg)`;
+			card.style.opacity = "0";
+
+			setTimeout(() => {
+			  card.remove();
+			  if (feed.querySelectorAll(".tweet-card").length === 0) {
+				renderFeed();
+			  }
+			}, 280);
+		  }
+		}
+
+		function startSecondCardTimer() {
+		  if (secondCardTimerInterval) return;
+
+		  const card = document.querySelector(
+			`.tweet-card[data-tid="${secondTimedCardId}"]`
+		  );
+		  if (!card) return;
+
+		  const timerEl = card.querySelector(".bet-timer");
+		  if (!timerEl) return;
+
+		  timerEl.hidden = false;
+		  timerEl.textContent = `Bet ends in: ${secondCardTimerSeconds}s`;
+
+		  secondCardTimerInterval = setInterval(() => {
+			secondCardTimerSeconds--;
+
+			const c = document.querySelector(
+			  `.tweet-card[data-tid="${secondTimedCardId}"]`
+			);
+			const el = c?.querySelector(".bet-timer");
+			if (el) {
+			  el.textContent = `Bet ends in: ${secondCardTimerSeconds}s`;
+
+			  if (secondCardTimerSeconds <= 2) {
+				el.classList.add("danger");
+			  }
+			}
+
+			if (secondCardTimerSeconds <= 0) {
+			  clearInterval(secondCardTimerInterval);
+			  secondCardTimerInterval = null;
+
+			  dismissedIds.add(secondTimedCardId);
+
+			  if (c) {
+				autoSlideLeft(c);
+			  }
+			}
+		  }, 1000);
+		}
+
 
 
 
@@ -1469,6 +2125,7 @@
         if (Math.abs(dx) > threshold) {
           if (dx > 0) triggerCombo();
           if (card.dataset.tid === timedCardId) {
+		  firstCardTimerConsumed = true;
 		  timedCardId = null;
 		}
           // mark dismissed for future filtering renders
@@ -1792,6 +2449,26 @@
 		  });
 		}
 		
+		const mysteryModal = document.getElementById("mysteryModal");
+		const mysteryOk = document.getElementById("mysteryOk");
+
+		function openMysteryModal() {
+		  mysteryModal.hidden = false;
+		  document.body.style.overflowY = "hidden";
+		}
+
+		function closeMysteryModal() {
+		  mysteryModal.hidden = true;
+		  document.body.style.overflowY = "auto";
+		}
+
+		mysteryOk.addEventListener("click", closeMysteryModal);
+
+		mysteryModal.addEventListener("click", (e) => {
+		  if (e.target === mysteryModal) closeMysteryModal();
+		});
+				
+		
 		
 		function startLiveOddsFluctuation() {
 		  const MIN = 5.0;
@@ -1865,6 +2542,49 @@
 		}
 
 	startLiveOddsFluctuation();
+
+
+	const bgLayer = document.getElementById("bgParticles");
+
+	const BG_PARTICLE_COUNT = 80; // keep low for elegance
+
+	function spawnBgCoin() {
+	  const coin = document.createElement("div");
+	  coin.className = "bg-coin";
+
+	  const size = 14 + Math.random() * 26; // 14–40px
+	  coin.style.width = size + "px";
+	  coin.style.height = size + "px";
+
+	  const startX = Math.random() * window.innerWidth;
+	  const startY = Math.random() * window.innerHeight;
+
+	  coin.style.left = startX + "px";
+	  coin.style.top = startY + "px";
+
+	  // random drift
+	  const dx = (Math.random() - 0.5) * 80;   // slow side sway
+	  const dy = -(120 + Math.random() * 200); // steady upward drift
+
+	  coin.style.setProperty("--dx", dx + "px");
+	  coin.style.setProperty("--dy", dy + "px");
+
+	  const duration = 40 + Math.random() * 40; // 40–80s
+	  coin.style.animationDuration = duration + "s";
+
+	  bgLayer.appendChild(coin);
+
+	  // recycle
+	  coin.style.animationIterationCount = "infinite";
+	}
+
+	// initial fill
+	for (let i = 0; i < BG_PARTICLE_COUNT; i++) {
+	  spawnBgCoin();
+	}
+
+	// continuous slow spawning
+	setInterval(spawnBgCoin, 2800);
 
   </script>
 </body>
