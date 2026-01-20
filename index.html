@@ -212,6 +212,30 @@
 		.comment-toggle i {
 		  font-size: 14px;
 		}
+		
+		
+		/* 🔥 Burning effect */
+		.tweet-card.burning {
+		  background:
+			linear-gradient(
+			  180deg,
+			  rgba(255, 80, 80, 0.18),
+			  rgba(120, 0, 0, 0.12)
+			),
+			linear-gradient(
+			  180deg,
+			  rgba(255,255,255,0.05),
+			  rgba(255,255,255,0.02)
+			);
+
+		  box-shadow:
+			0 0 30px rgba(255, 80, 80, 0.35),
+			0 14px 40px rgba(0,0,0,0.45);
+
+		  transition:
+			background 1s linear,
+			box-shadow 1s linear;
+		}
 
 		.comment-count {
 		  background: #7c3aed;
@@ -468,6 +492,7 @@
       user-select: none;
       font-weight: 400;
       white-space: nowrap;
+	  cursor: pointer;
     }
 	
 	.mystery-box {
@@ -1614,115 +1639,248 @@
   </div>
 
   <script>
-    const CATEGORIES = ["All", "Sports", "Bitcoin", "Weather", "Tech", "Other"];
-	 const CATEGORY_ICONS = {
-	  All: "bi-grid",
-	  Sports: "bi-dribbble",
-	  Bitcoin: "bi-currency-bitcoin",
-	  Weather: "bi-cloud-sun",
-	  Tech: "bi-cpu",
-	  Other: "bi-stars"
-	};
+    function getCategoriesFromContent() {
+	  const set = new Set(tweetsData.map(t => t.category));
+	  return ["All", ...Array.from(set)];
+	}
+const CATEGORY_ICONS = {
+  // Core
+  All: "bi-grid",
+  Other: "bi-stars",
+
+  // Politics & world
+  Politics: "bi-bank",
+  Geopolitics: "bi-globe-europe-africa",
+  Government: "bi-building",
+  Elections: "bi-check2-square",
+  Law: "bi-balance-scale",
+
+  // Economy & finance
+  Economy: "bi-graph-up",
+  Markets: "bi-bar-chart-line",
+  Macro: "bi-graph-up-arrow",
+  Inflation: "bi-cash-stack",
+  Recession: "bi-exclamation-triangle",
+  Banking: "bi-piggy-bank",
+  Stocks: "bi-currency-dollar",
+
+  // Crypto & fintech
+  Crypto: "bi-currency-bitcoin",
+  Bitcoin: "bi-currency-bitcoin",
+  Ethereum: "bi-currency-exchange",
+  DeFi: "bi-diagram-3",
+  Fintech: "bi-credit-card",
+  Payments: "bi-wallet2",
+
+  // Tech
+  Tech: "bi-cpu",
+  AI: "bi-robot",
+  Startups: "bi-lightning-charge",
+  SaaS: "bi-cloud",
+  BigTech: "bi-hdd-network",
+  Cybersecurity: "bi-shield-lock",
+  Data: "bi-database",
+
+  // Media & internet
+  Media: "bi-broadcast",
+  TechMedia: "bi-newspaper",
+  Journalism: "bi-megaphone",
+  SocialMedia: "bi-chat-dots",
+  Internet: "bi-wifi",
+
+  // Sports
+  Sports: "bi-dribbble",
+  Football: "bi-trophy",
+  Basketball: "bi-dribbble",
+  Tennis: "bi-circle",
+  Olympics: "bi-award",
+
+  // Entertainment & culture
+  Entertainment: "bi-film",
+  Movies: "bi-camera-reels",
+  TV: "bi-tv",
+  Music: "bi-music-note-beamed",
+  Celebrities: "bi-star",
+  Culture: "bi-palette",
+  Fashion: "bi-handbag",
+
+  // Health & science
+  Health: "bi-heart-pulse",
+  MentalHealth: "bi-brain",
+  Medicine: "bi-capsule",
+  Science: "bi-beaker",
+  Space: "bi-rocket",
+  Climate: "bi-cloud-sun",
+  Weather: "bi-cloud-rain-heavy",
+
+  // Business & work
+  Business: "bi-briefcase",
+  Jobs: "bi-person-workspace",
+  Layoffs: "bi-person-dash",
+  Careers: "bi-diagram-2",
+  RemoteWork: "bi-house-door",
+
+  // Society & lifestyle
+  Society: "bi-people",
+  Education: "bi-mortarboard",
+  Crime: "bi-exclamation-octagon",
+  Travel: "bi-airplane",
+  Food: "bi-egg-fried",
+
+  // Pop / misc
+  Memes: "bi-emoji-laughing",
+  InternetCulture: "bi-lightning",
+  Trends: "bi-fire",
+  Rumors: "bi-chat-left-text"
+};
 	const tweetsData = [
-	  {
-		id: "t1",
-		category: "Sports",
-		name: "Nova Reyes",
-		handle: "@novareyes",
-		time: "2m",
-		bet: "Argentina will win by 2+ goals tonight",
-		context: "Argentina has been dominating possession in recent matches and comes into this game with a much stronger starting lineup than last week. If they score early, the gap should widen quickly in the second half.",
-		odds: 185,
-		replies: 12,
-		reposts: 48,
-		likes: 310,
-		comments: [
-		  { name: "Juan", text: "Argentina is flying lately, this feels safe ⚽️" },
-		  { name: "Sofi", text: "If they score early it’s basically done" },
-		  { name: "Marcos", text: "Defense is solid, I’m in on this one" }
-		]
-	  },
-	  {
-		id: "t2",
-		category: "Bitcoin",
-		name: "Theo Martinez",
-		handle: "@theom",
-		time: "8m",
-		bet: "BTC will close above $50k this week",
-		context: "Bitcoin has respected key support levels all week and funding rates remain neutral, suggesting no excessive leverage. With macro pressure cooling down, a strong weekly close above 50k feels likely.",
-		odds: 210,
-		replies: 19,
-		reposts: 61,
-		likes: 982,
-		comments: [
-		  { name: "Leo", text: "50k is heavy resistance, not so sure" },
-		  { name: "Ana", text: "Funding rates look healthy, could happen" },
-		  { name: "Pablo", text: "Macro looks calmer this week 👀" },
-		  { name: "Mati", text: "Whales might push it before close" },
-		  { name: "Carla", text: "I’m betting small but bullish" }
-		]
-	  },
 	{
-	  id: "t3",
-	  category: "Weather",
-	  name: "Aya K.",
-	  handle: "@aya_k",
-	  time: "12m",
-	  bet: "It will rain in Buenos Aires before Friday",
-	  context: "Humidity has been steadily increasing and the latest forecast models show atmospheric instability building mid-week. Even a brief rainfall would confirm this setup.",
-	  odds: 160,
-	  replies: 8,
-	  reposts: 33,
-	  likes: 220,
+	  id: "t101",
+	  category: "Geopolitics",
+	  name: "Leo M.",
+	  handle: "@leo_macro",
+	  time: "9m",
+	  bet: "Trump will escalate rhetoric on Greenland again before the end of the week",
+	  context: "Multiple European leaders are responding publicly, markets reacted negatively, and Trump has a pattern of doubling down when challenged internationally. Davos coverage suggests this issue stays hot for days.",
+	  odds: 145,
+	  replies: 14,
+	  reposts: 51,
+	  likes: 402,
 	  comments: [
-	  { name: "Lucía", text: "No chance, it’s been sunny all week ☀️" },
-	  { name: "Tomás", text: "Weather models changed today, looks likely" },
-	  { name: "Martina", text: "I’m in Palermo and clouds are rolling in" },
-	  { name: "Fede", text: "Last forecast said rain Thursday night" },
-	  { name: "Camila", text: "Humidity is crazy rn" },
-	  { name: "Nico", text: "Trusting this one" },
-	  { name: "Vale", text: "Putting a bet on this 🌧️" }
-	]
+		{ name: "Anna", text: "He won’t drop this, ego too big" },
+		{ name: "Mark", text: "Markets already pricing more chaos" },
+		{ name: "Sofi", text: "Greenland becoming the new Ukraine headline" },
+		{ name: "Julián", text: "He thrives on this kind of attention" },
+		{ name: "Chris", text: "Betting yes, sadly" }
+	  ]
 	},
-	  {
-		id: "t4",
-		category: "Tech",
-		name: "Milo Chen",
-		handle: "@miloch",
-		time: "18m",
-		bet: "The next iPhone event mentions AI >10 times",
-		context: "Apple has been positioning AI heavily in recent earnings calls and developer updates. Given market expectations and competitive pressure, AI will likely be a dominant theme in the announcement.",
-		odds: 130,
-		replies: 41,
-		reposts: 120,
-		likes: 1420
-	  },
-	  {
-		id: "t5",
-		category: "Sports",
-		name: "Sienna Park",
-		handle: "@siennap",
-		time: "25m",
-		bet: "The under hits in tonight’s game",
-		context: "Both teams play at a slow pace and rank among the lowest in shot attempts per game. With key offensive players out, this matchup sets up well for a low-scoring result.",
-		odds: 175,
-		replies: 17,
-		reposts: 54,
-		likes: 610
-	  },
-	  {
-		id: "t6",
-		category: "Other",
-		name: "Ghost in the Shell Script",
-		handle: "@gitscript",
-		time: "33m",
-		bet: "Someone ships a hotfix before lunch",
-		context: "Production has been unstable all morning and error rates are climbing. Given the team’s past response patterns, a quick hotfix before noon wouldn’t be surprising.",
-		odds: 145,
-		replies: 6,
-		reposts: 22,
-		likes: 178
-	  }
+	{
+	  id: "t2",
+	  category: "Tech & Media",
+	  name: "Sara P.",
+	  handle: "@streamwatch",
+	  time: "31m",
+	  bet: "Netflix will face regulatory pushback within 30 days over its Warner bid",
+	  context: "An $83B all-cash acquisition of major media assets is likely to trigger antitrust scrutiny. Similar deals have drawn rapid political and regulatory responses.",
+	  odds: 130,
+	  replies: 19,
+	  reposts: 64,
+	  likes: 511,
+	  comments: [
+		{ name: "Lucas", text: "No way this flies quietly" },
+		{ name: "Fran", text: "All-cash makes it even spicier" },
+		{ name: "Emma", text: "Regulators will want headlines too" },
+		{ name: "Nico", text: "Easy yes" }
+	  ]
+	},
+	{
+	  id: "t110",
+	  category: "Sports",
+	  name: "Rafa C.",
+	  handle: "@courtvision",
+	  time: "39m",
+	  bet: "Jimmy Butler’s injury will trigger at least one Warriors trade rumor this month",
+	  context: "Season-ending injuries often force contenders into reactive trade narratives. Media speculation usually begins within weeks.",
+	  odds: 140,
+	  replies: 15,
+	  reposts: 49,
+	  likes: 351,
+	  comments: [
+		{ name: "Benja", text: "They can’t waste Curry years" },
+		{ name: "Leo", text: "Rumors already brewing" },
+		{ name: "Max", text: "Front office has no choice" }
+	  ]
+	},
+	{
+	  id: "t105",
+	  category: "Culture",
+	  name: "Luna F.",
+	  handle: "@poppulse",
+	  time: "1h",
+	  bet: "Valentino Garavani’s death will trigger a major fashion house tribute show in 2026",
+	  context: "Iconic designers almost always receive posthumous retrospectives. Given Valentino’s influence, a large-scale tribute during Fashion Week is highly likely.",
+	  odds: 120,
+	  replies: 9,
+	  reposts: 41,
+	  likes: 356,
+	  comments: [
+		{ name: "Caro", text: "Absolutely deserved" },
+		{ name: "Vale", text: "Rome or Paris?" },
+		{ name: "Martín", text: "Fashion always honors its legends" }
+	  ]
+	},
+	{
+	  id: "t106",
+	  category: "Health",
+	  name: "Ana G.",
+	  handle: "@wellnessbrief",
+	  time: "2h",
+	  bet: "Postpartum psychosis will be formally added to the DSM within the next revision",
+	  context: "Growing medical consensus, public debate, and recent coverage suggest momentum toward recognition as a distinct diagnosis.",
+	  odds: 155,
+	  replies: 17,
+	  reposts: 36,
+	  likes: 289,
+	  comments: [
+		{ name: "Julia", text: "Long overdue" },
+		{ name: "Mateo", text: "Hope this improves care access" },
+		{ name: "Flor", text: "Awareness is finally growing" }
+	  ]
+	},
+	{
+	  id: "t108",
+	  category: "Economy",
+	  name: "Tom B.",
+	  handle: "@macroframe",
+	  time: "18m",
+	  bet: "Economists will revise down U.S. growth forecasts before February",
+	  context: "Multiple analyses warn Trump’s policies weaken long-term economic stability. Forecast revisions typically follow sustained policy uncertainty and market stress.",
+	  odds: 150,
+	  replies: 9,
+	  reposts: 21,
+	  likes: 174,
+	  comments: [
+		{ name: "Santi", text: "Already seeing whispers of this" },
+		{ name: "Mara", text: "Feels like a lagging indicator" },
+		{ name: "Joel", text: "Consensus always moves late" }
+	  ]
+	},
+		{
+	  id: "t109",
+	  category: "Tech",
+	  name: "Kevin L.",
+	  handle: "@futureofwork",
+	  time: "26m",
+	  bet: "At least one major company will announce AI-driven layoffs in Q1",
+	  context: "Despite ‘worker empowerment’ messaging, AI startups and enterprises continue cutting costs. Similar announcements clustered early last year.",
+	  odds: 165,
+	  replies: 20,
+	  reposts: 57,
+	  likes: 462,
+	  comments: [
+		{ name: "Nina", text: "Sad but realistic" },
+		{ name: "Oscar", text: "AI optimism ≠ job security" },
+		{ name: "Luis", text: "This trend hasn’t slowed at all" }
+	  ]
+	},
+	{
+	  id: "t111",
+	  category: "Entertainment",
+	  name: "Clara S.",
+	  handle: "@awardwatch",
+	  time: "51m",
+	  bet: "At least one surprise snub will dominate Oscar nomination headlines",
+	  context: "Crowded best-picture fields historically produce shock exclusions. Early buzz already shows divided critic consensus.",
+	  odds: 135,
+	  replies: 22,
+	  reposts: 62,
+	  likes: 508,
+	  comments: [
+		{ name: "Paz", text: "There’s always one" },
+		{ name: "Romi", text: "Twitter will explode" },
+		{ name: "Diego", text: "Calling it now" }
+	  ]
+	}
 	];
 
     const feed = document.getElementById("feed");
@@ -1834,7 +1992,7 @@
 
     function renderCategories() {
       catScroll.innerHTML = "";
-      CATEGORIES.forEach(cat => {
+      getCategoriesFromContent().forEach(cat => {
         const chip = document.createElement("div");
         chip.className = "cat-chip" + (cat === activeCategory ? " active" : "");
         chip.innerHTML = `
@@ -1918,6 +2076,14 @@
 
 			<!-- COMMENT ACCORDION -->
 			<div class="comment-accordion" hidden>
+						<h3 style="
+				padding-bottom: 3px;
+				margin-bottom: 3px;
+				color: #ffffff70;
+				font-weight: 900;
+				/* letter-spacing: 4px; */
+				border-bottom: 1px solid #100f1d40;
+			">CHAT</h3>
 			  ${tweet.comments
 				.map((c, i) => `
 				  <div class="chat-row ${i % 2 === 0 ? "left" : "right"}">
@@ -2119,6 +2285,10 @@
 		  if (firstCardSeconds <= 2) {
 			el.classList.add("danger");
 		  }
+		  
+			if (firstCardSeconds <= 2 && card) {
+			  card.classList.add("burning");
+			}
 		}
 
 		if (firstCardSeconds <= 0) {
@@ -2192,6 +2362,9 @@
 			  if (secondCardTimerSeconds <= 2) {
 				el.classList.add("danger");
 			  }
+			  if (secondCardTimerSeconds <= 2 && c) {
+			  c.classList.add("burning");
+			}
 			}
 
 			if (secondCardTimerSeconds <= 0) {
@@ -2741,6 +2914,9 @@
 function switchView(target) {
   Object.values(views).forEach(v => v.classList.remove("active"));
   views[target].classList.add("active");
+
+  // 🔝 reset viewport position
+  window.scrollTo({ top: 0, behavior: "instant" });
 }
 
 document.querySelectorAll(".nav-item").forEach(item => {
@@ -2755,6 +2931,22 @@ document.querySelectorAll(".nav-item").forEach(item => {
 
     switchView(view);
   });
+});
+
+const topBetPill = document.querySelector(".pill");
+
+topBetPill.addEventListener("click", () => {
+  // activate bottom nav state
+  document.querySelectorAll(".nav-item").forEach(n =>
+    n.classList.remove("active")
+  );
+  document.querySelector('.nav-item[data-view="bets"]').classList.add("active");
+
+  // switch view
+  switchView("bets");
+
+  // always go to top
+  window.scrollTo({ top: 0, behavior: "smooth" });
 });
 
   </script>
