@@ -394,15 +394,20 @@
 	}
 
 	.mystery-icon {
-	  width:92px;
-	  height:92px;
-	  display:grid;
-	  place-items:center;
-	  font-size:82px;
-	  color:#fff;
+	  width: 92px;
+	  height: 92px;
+	  display: grid;
+	  place-items: center;
 
 	  animation: giftWiggle 2s ease-in-out infinite;
 	  transform-origin: center;
+	}
+
+	.mystery-icon img {
+	  width: 100%;
+	  height: 100%;
+	  object-fit: contain; /* keeps original proportions */
+	  display: block;
 	}
 
 	@keyframes giftWiggle {
@@ -665,6 +670,67 @@
 	  border: 1px solid rgba(255,255,255,0.12);
 	  background: rgba(255,255,255,0.06);
 	}
+	
+	.view-container {
+	  position: relative;
+	  min-height: 60vh;
+	}
+
+	.view {
+	  position: absolute;
+	  inset: 0;
+	  opacity: 0;
+	  pointer-events: none;
+	  transform: scale(0.985);
+	  transition:
+		opacity 0.28s ease,
+		transform 0.28s ease;
+	}
+
+	.view.active {
+	  opacity: 1;
+	  pointer-events: auto;
+	  transform: scale(1);
+	}
+
+	/* Centered states (leaderboard, bets, profile) */
+	.center-view {
+	  height: calc(100vh - 200px);
+	  display: flex;
+	  flex-direction: column;
+	  justify-content: center;
+	  align-items: center;
+	  text-align: center;
+	  gap: 10px;
+	  padding: 24px;
+	}
+
+	.view-icon {
+	  font-size: 64px;
+	  margin-bottom: 6px;
+	  color: #c4b5fd;
+	  filter: drop-shadow(0 6px 18px rgba(168,85,247,0.35));
+	}
+
+	.center-view h2 {
+	  font-size: 18px;
+	  font-weight: 900;
+	}
+
+	.center-view p {
+	  font-size: 13px;
+	  opacity: 0.75;
+	  max-width: 260px;
+	}
+
+	.profile-avatar {
+	  width: 88px;
+	  height: 88px;
+	  border-radius: 999px;
+	  object-fit: cover;
+	  margin-bottom: 6px;
+	  border: 2px solid rgba(255,255,255,0.25);
+	}
 
 	.avatar img {
 	  width: 100%;
@@ -729,14 +795,61 @@
       background: rgba(89,255,160,0.08);
     }
 	
+			/* Shining sweep effect */
+		.pill::after {
+		  content: "";
+		  position: absolute;
+		  top: 0;
+		  left: -60%;
+		  width: 50%;
+		  height: 100%;
+
+		  background: linear-gradient(
+			120deg,
+			transparent 0%,
+			rgba(255,255,255,0.45) 50%,
+			transparent 100%
+		  );
+
+		  transform: skewX(-20deg);
+		  opacity: 0;
+
+		  animation: pillShine 2s ease-in-out infinite;
+		  pointer-events: none;
+		}
+
+		/* Shine animation */
+		@keyframes pillShine {
+		  0% {
+			left: -60%;
+			opacity: 0;
+		  }
+		  20% {
+			opacity: 1;
+		  }
+		  50% {
+			left: 120%;
+			opacity: 0;
+		  }
+		  100% {
+			left: 120%;
+			opacity: 0;
+		  }
+		}
+
+	
 	.tweet-card.mystery-box {
 		backdrop-filter:none;
 		margin:auto;
 	}
 	
+	.tweet-card .pill-top {
+	 letter-spacing:2px;
+	}
+	
 	.tweet-card.mystery-box .name {
-		font-family: "Annie Use Your Telescope", cursive;
-		font-size:34px;
+		font-size:22px;
+		padding-top:10px;
 	}
 
     .stamp.nope {
@@ -1441,27 +1554,59 @@
       <div class="cat-scroll" id="catScroll"></div>
     </div>
 
-    <div class="feed" id="feed"></div>
+	<div class="view-container">
+	  <div class="view active" id="homeView">
+		<div class="feed" id="feed"></div>
+	  </div>
+
+	  <div class="view" id="leaderboardView">
+		<div class="center-view">
+		  <i class="bi bi-trophy-fill view-icon"></i>
+		  <h2>Weekly Leaderboard</h2>
+		  <p>Bet 5 times to unlock the weekly leaderboard</p>
+		</div>
+	  </div>
+
+	  <div class="view" id="betsView">
+		<div class="center-view">
+		  <i class="bi bi-coin view-icon"></i>
+		  <h2>Your Bets</h2>
+		  <p>Here you’ll see your bets</p>
+		</div>
+	  </div>
+
+	  <div class="view" id="profileView">
+		<div class="center-view">
+		  <img
+			src="https://i.pravatar.cc/160"
+			class="profile-avatar"
+			alt="Profile"
+		  />
+		  <h2>Nico</h2>
+		  <p>@crowdbetter</p>
+		</div>
+	  </div>
+	</div>
   </div>
 
   <div class="bottom-nav" id="bottomNav">
 		<div class="bottom-nav-inner">
-	  <div class="nav-item active">
+	  <div class="nav-item active" data-view="home">
 		<div class="nav-icon"><i class="bi bi-house"></i></div>
 		<div>Home</div>
 	  </div>
 
-	  <div class="nav-item">
+	  <div class="nav-item" data-view="leaderboard">
 		<div class="nav-icon"><i class="bi bi-trophy"></i></div>
 		<div>Leaderboard</div>
 	  </div>
 
-	  <div class="nav-item">
+	  <div class="nav-item" data-view="bets">
 		<div class="nav-icon"><i class="bi bi-coin"></i></div>
 		<div>Bet</div>
 	  </div>
 
-	  <div class="nav-item">
+	  <div class="nav-item" data-view="profile">
 		<div class="nav-icon"><i class="bi bi-person-circle"></i></div>
 		<div>Profile</div>
 	  </div>
@@ -1876,7 +2021,7 @@
   box.innerHTML = `
     <div class="top-row">
       <div class="mystery-icon">
-		  <i class="bi bi-gift-fill"></i>
+		  <img src="mystery.png" alt="Mystery box" />
 		</div>
 
       <div class="content">
@@ -2585,6 +2730,32 @@
 
 	// continuous slow spawning
 	setInterval(spawnBgCoin, 2800);
+	
+	const views = {
+  home: document.getElementById("homeView"),
+  leaderboard: document.getElementById("leaderboardView"),
+  bets: document.getElementById("betsView"),
+  profile: document.getElementById("profileView"),
+};
+
+function switchView(target) {
+  Object.values(views).forEach(v => v.classList.remove("active"));
+  views[target].classList.add("active");
+}
+
+document.querySelectorAll(".nav-item").forEach(item => {
+  item.addEventListener("click", () => {
+    const view = item.dataset.view;
+
+    // nav active state
+    document.querySelectorAll(".nav-item").forEach(n =>
+      n.classList.remove("active")
+    );
+    item.classList.add("active");
+
+    switchView(view);
+  });
+});
 
   </script>
 </body>
